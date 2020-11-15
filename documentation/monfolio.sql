@@ -1,6 +1,6 @@
 CREATE TABLE user(
     user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    user_name TINYTEXT NOT NULL,
+    user_names TINYTEXT NOT NULL,
     user_uid TINYTEXT NOT NULL,
     user_email TEXT NOT NULL,
     user_pwd TEXT NOT NULL,
@@ -82,7 +82,7 @@ INSERT INTO `media`(`media_type`, `media_path`) VALUES (0, 'resources/upload/img
 INSERT INTO `project_media`(`project_id`, `media_id`) VALUES (0, 0);
 INSERT INTO `project_media`(`project_id`, `media_id`) VALUES (1, 1);
 
-INSERT INTO `user`(`user_name`, `user_uid`, `user_email`, `user_pwd`, `user_pic_id`, `user_title`, `user_txt`) VALUES ('Nicolas Filizzola', 'Admin', 'admin@admin.com', 'test', '0', 'MonFolio Founder', 'Just chilling');
+INSERT INTO `user`(`user_names`, `user_uid`, `user_email`, `user_pwd`, `user_pic_id`, `user_title`, `user_txt`) VALUES ('Nicolas Filizzola', 'Admin', 'admin@admin.com', 'test', '0', 'MonFolio Founder', 'Just chilling');
 
 INSERT INTO `project_tag`(`project_id`, `tag_id`) VALUES (0, 0);
 INSERT INTO `project_tag`(`project_id`, `tag_id`) VALUES (0, 1);
