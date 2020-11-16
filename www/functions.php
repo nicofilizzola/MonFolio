@@ -19,16 +19,14 @@
 	function home($creator_id, $category_id, $type_id){
 		require("include/conn.inc.php");
 
-
 		/* ********************************
 			OPTION 1 : DISPLAY PROJECT BY CREATOR
 		 ********************************* */
 		
 		function display_by_creator($creator_id, $conn){
 			$sql = "SELECT * FROM project WHERE project.user_id = '$creator_id'";
-			$result = mysqli_query($conn, $sql);
-			
-			get_project_img_execute($result, $conn, 1);
+
+			get_project_img_execute($sql, $conn, 1);
 		}
 		
 
@@ -36,11 +34,10 @@
 			OPTION 2 : DISPLAY NEWEST
 		 ********************************* */
 
-		function display_newest(){
+		function display_newest($conn){
 			$sql = "SELECT * FROM project ORDER BY ASC";
-			$result = mysqli_query($conn, $sql);
 			
-			get_project_img_execute($result, $conn, 0);
+			get_project_img_execute($sql, $conn, 0);
 		}
 
 
@@ -48,12 +45,13 @@
 			SEARCH PROJECT IMGS AND DISPLAY
 		 ********************************* */
 
-		function get_project_img_execute($mysql_result, $conn, $error_code){
+		function get_project_img_execute($sql, $conn, $error_code){
 
-			$result_check = mysqli_num_rows($mysql_result);
+			$result = mysqli_query($conn, $sql);
+			$result_check = mysqli_num_rows($result);
 
 			if($result_check > 0){
-				while ($row = mysqli_fetch_assoc($mysql_result)){
+				while ($row = mysqli_fetch_assoc($result)){
 					$project_id = $row['project_id'];
 					$project_name = $row['project_name'];
 					$creator_id = $row['user_id'];
@@ -71,7 +69,7 @@
 					display_project($project_id, $project_name, $media_cover, $conn);
 				}
 			} else {
-				error_empty();
+				error_empty($error_code);
 			}
 		}
 
@@ -153,8 +151,12 @@
 		 ********************************* */
 
 
-		if($category_id == "" && $type_id == ""){
+		if(isset($creator_id)){
+
 			display_by_creator($creator_id, $conn);
-		} 
+		} else {
+
+			display_newest($conn);
+		}
 
 	}

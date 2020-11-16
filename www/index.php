@@ -1,5 +1,10 @@
 <?php
 	require('header.php');
+
+	if (isset($_SESSION['my_user_id'])){
+		echo 'my user id '.$_SESSION['my_user_id'];
+	}
+
 ?>
 
 	<nav>
@@ -13,10 +18,9 @@
 			<button>Rechercher</button>
 		</form>
 
-		<form action="">
-			<button>Se connecter</button>
-			<button>Rejoindre</button>
-		</form>
+		<button>Se connecter</button>
+		<button>Rejoindre</button>
+		<button>Se déconnecter</button>
 		
 	</nav>
 
@@ -30,7 +34,17 @@
 			</form>
 		</article>
 
-
+		<article>
+			<form action="include/signin.inc.php" method="POST">
+				<input type="text" name="login" placeholder="Adresse email/Nom d'utilisateur" required>
+				<input type="password" name="pwd" placeholder="Mot de passe" required>
+				<!-- 
+				<input type="checkbox" name="remember" value="Rester connecté">	
+				 -->
+				<button type="submit" name="signin_submit">Connexion</button>
+			</form>
+		
+		</article>
 
 
 		<article>
@@ -111,8 +125,14 @@
 
 		}
 		*/
-		
-		home($_GET['user_id'], 0, 0);
+		if (isset($_GET['user_id'])){
+
+			home($_GET['user_id'], 0, 0);
+		} else {
+
+			home('', 0, 0);
+
+		}
 
 	?>
 

@@ -7,7 +7,7 @@
 
     require('conn.inc.php');
 
-    function sign_up($first, $last, $uid, $email, $pwd){
+    function sign_up($first, $last, $uid, $email, $pwd, $conn){
 
         $name = $first." ".$last;
         $pwd_secure = password_hash($pwd, PASSWORD_DEFAULT);
@@ -28,31 +28,15 @@
         // IF STATEMENT WORKS
         } else {
             
-            mysqli_stmt_bind_param($stmt, "ssss");
+            mysqli_stmt_bind_param($stmt, "ssss", $name, $uid, $email, $pwd_secure);
             mysqli_stmt_execute($stmt);
-            session_start();
 
-            // NEW STATEMENT: GET NEW USER'S ID FROM EMAIL
-            $sqlId = "SELECT user_id FROM user WHERE user_email = ?";
-            $stmt = mysqli_stmt_init($conn);
+            // CLOSE STATEMENT AND DATABASE CONNECTION
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
 
-            // IF STATEMENT DOESN'T WORK
-            if (!mysqli_stmt_prepare($stmt, $sql)){
-
-                header('Location : ../index.php?error=mysql_stmt_3');
-                exit();
-
-            // IF STATEMENT WORKS
-            } else {
-
-                mysqli_stmt_bind_param($stmt, "s", $email);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_store_result($stmt);
-                $user_id = mysqli_stmt_fetch_assoc($result);
-
-            }
-
-            $_SESSION['my_user_id'] = $user_id;
+            // REDIRECT
+            header('Location: ../index.php?signup=success');
 
         }
     }  
@@ -201,12 +185,8 @@
         // IF THERE IS NO ERROR
         else {
 
-            sign_up($first, $last, $uid, $email, $pwd);
+            sign_up($first, $last, $uid, $email, $pwd, $conn);
 
         }
-
-        // CLOSE STATEMENT AND DATABASE CONNECTION
-		mysqli_stmt_close($stmt);
-        mysqli_close($conn);
         
     }
