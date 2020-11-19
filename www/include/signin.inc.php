@@ -33,7 +33,7 @@
     function login_check($login, $pwd, $conn){
 
         /* NEW STATEMENT : CHECK IF USERNAME EXISTS */
-        $sql = 'SELECT * FROM user WHERE user_uid = ? OR user_email = ?';
+        $sql = 'SELECT user_pwd FROM user WHERE user_uid = ? OR user_email = ?';
         $stmt = mysqli_stmt_init($conn);
 
         // IF STATEMENT DOESN'T WORK
@@ -49,8 +49,6 @@
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             $found_pwd = mysqli_fetch_assoc($result)['user_pwd'];
-
-
             
 /*
 ERROR HERE
@@ -59,13 +57,13 @@ ERROR HERE
             // IF PASSWORD NOT FOUND
             if (empty($found_pwd)){
                 
-                return 0;
+                return '0';
                 exit();
 
             // IF PASSWORDS DON'T MATCH
             } elseif(!password_verify($pwd, $found_pwd)){
 
-                return 1;
+                return '1';
                 exit();
 
             }
@@ -74,27 +72,23 @@ ERROR HERE
 
     }
 
-    /*************************
-        ERROR HANDLERS
-     ************************/
-
     $login = $_POST['login'];
     $pwd = $_POST['pwd'];
-
     $login_check_code = login_check($login, $pwd, $conn);
+
     if(empty($login) || empty($pwd)){
 
-        header('Location: ../index.php?error=signin_0');
+        header('Location: ../index.php?error=signin_0&login='.$login);
         exit();
 
     // IF USER/EMAIL DOESN'T EXIST
-    } elseif($login_check_code == 0){
+    } elseif($login_check_code == '0'){
 
         header('Location: ../index.php?error=signin_1');
         exit();
 
     // IF PASSWORD WRONG
-    } elseif ($login_check_code == 1){
+    } elseif ($login_check_code == '1'){
 
         header('Location: ../index.php?error=signin_2&login='.$login);
         exit();
@@ -107,6 +101,3 @@ ERROR HERE
 
     }
 
-
-    
-    

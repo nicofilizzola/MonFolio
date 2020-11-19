@@ -18,9 +18,15 @@
 			<button>Rechercher</button>
 		</form>
 
-		<button>Se connecter</button>
-		<button>Rejoindre</button>
-		<button>Se déconnecter</button>
+		<?php
+
+			// FOR VISITOR - interface.php
+			sign_btns();
+
+			// FOR USER - interface.php
+			signout_btn();
+
+		?>
 		
 	</nav>
 
@@ -34,34 +40,18 @@
 			</form>
 		</article>
 
-		<article>
-			<form action="include/signin.inc.php" method="POST">
-				<input type="text" name="login" placeholder="Adresse email/Nom d'utilisateur" required>
-				<input type="password" name="pwd" placeholder="Mot de passe" required>
-				<!-- 
-				<input type="checkbox" name="remember" value="Rester connecté">	
-				 -->
-				<button type="submit" name="signin_submit">Connexion</button>
-			</form>
 		
-		</article>
 
 
-		<article>
-			
-			<form action="include/signup.inc.php" method="POST">
-			
-				<input type="text" name="first" placeholder="Prénom" required>
-				<input type="text" name="last" placeholder="Nom" required>
-				<input type="text" name="uid" placeholder="Nom d'utilisateur" required>
-				<input type="email" name="email" placeholder="Adresse email" required>
-				<input type="password" name="pwd" placeholder="Mot de passe" required>
-				<input type="password" name="pwd_ver" placeholder="Vérifiez votre mot de passe" required>
-				<button type="submit" name="signup_submit">Commencer</button>
+		<?php
 
-			</form>
+			// FOR VISITOR - interface.php
+			signin_form();
 
-		</article>
+			// FOR USER - interface.php
+			signup_form();
+
+		?>
 
 
 

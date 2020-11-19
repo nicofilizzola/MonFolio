@@ -1,11 +1,13 @@
 <?php
 
+    require('functions.php');
+    startup();
+
+    require('interface.php');
+
     echo '
         <!doctype html>
         ';
-
-    require('functions.php');
-    startup();
 
     echo '
         <html>
