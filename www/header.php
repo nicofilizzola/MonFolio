@@ -7,9 +7,6 @@
 
     echo '
         <!doctype html>
-        ';
-
-    echo '
         <html>
         <head>
             <meta charset="utf-8">
@@ -19,4 +16,24 @@
         </head>
 
         <body>
+
+            <nav>
+            <a href="">
+                <img src="" alt="logo">
+            </a>
         ';
+
+    // FOR EVERYONE
+    user_searchbar();
+
+    // FOR VISITOR - interface.php
+    sign_btns();
+
+    // FOR USER - interface.php
+    signout_btn();
+
+    echo '
+            </nav>
+    ';
+
+    

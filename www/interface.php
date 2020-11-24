@@ -1,5 +1,52 @@
 <?php
 
+    // FOR EVERYONE
+
+    function filter_searchbar(){
+
+        echo'
+            <article>
+                <div>
+                    <h2>Projets à découvrir</h2>
+                    <form action="index.php" method="get">
+                        <select name="cat" id="">
+                            <option value="">Catégories</option>
+                            <option value="0">Graphisme</option>
+                            <option value="1">Audiovisuel</option>
+                            <option value="2">Web Design</option>
+                            <option value="3">Développement</option>
+                        </select>
+                        <select name="type" id="">
+                            <option value="">Type de projet</option>
+                            <option value="0">Individuel</option>
+                            <option value="1">Collectif</option>
+                        </select>
+                        <select name="tag" id="">
+                            <option value="">Tags</option>
+                            <option value="0">Tag 1</option>
+                            <option value="1">Tag 2</option>
+                            <option value="2">Tag 3</option>
+                            <option value="3">Tag 4</option>
+                        </select>
+                        <button type="submit">Rechercher</button>
+                    </form>	
+                </div>
+            </article>
+        ';
+    }
+
+    function user_searchbar(){
+        echo '
+            <form action="" method="get">
+                <input type="text" name="" id="" placeholder="Rechercher un utilisateur">
+                <button>Rechercher</button>
+            </form>
+        ';
+    }
+
+
+
+    // ONLY FOR CONNECTED USERS
     if(isset($_SESSION['my_user_id'])){
 
         function signout_btn(){
@@ -22,6 +69,12 @@
             return;
         }
 
+        function cta_band(){
+            return;
+        }
+
+
+    // ONLY FOR VISITORS (NOT CONNECTED)
     } else {
 
         function signout_btn(){
@@ -113,8 +166,21 @@
                     </form>
                 </article>
             ';
-                        
-                        
+                                    
+        }
+
+        function cta_band(){
+            
+            echo'
+                <article>
+                    <h1>Partagez vos projets créatifs</h1>
+
+                    <form action="">
+                        <button>Commencer</button>
+                    </form>
+                </article>
+            ';
+
         }
 
     }
