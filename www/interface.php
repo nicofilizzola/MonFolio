@@ -82,6 +82,21 @@
         }
 
 
+        // BACK OFFICE ONLY
+
+        function np_btn(){
+            echo '
+                <div>
+                    <form action="include/project_editor.php" method="get">
+
+                        <button type="submit" name="new-project_submit">Nouveau projet</button>	
+                    
+                    </form>
+                </div>
+            ';
+        }
+
+
 
     // ONLY FOR VISITORS (NOT CONNECTED)
     } else {

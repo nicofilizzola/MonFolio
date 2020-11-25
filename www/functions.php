@@ -65,9 +65,10 @@
 		 ********************************* */
 		
 		function display_by_creator($creator_id, $conn){
-			$sql = "SELECT * FROM project WHERE project.user_id = '$creator_id'";
+			$sql = "SELECT * FROM project WHERE project.user_id = '$creator_id' ORDER BY project_id DESC";
 
 			get_project_data_execute($sql, $conn, 1);
+			
 		}
 		
 
@@ -271,9 +272,8 @@
 
 
 		/* ********************************
-			EXECUTE // ERRORRRRRRRRRRRRR
+			EXECUTE
 		 ********************************* */
-
 
 		if(isset($creator_id) && $creator_id != ""){
 

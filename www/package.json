@@ -1,0 +1,12 @@
+{
+  "name": "monfolio_cms",
+  "version": "1.0.0",
+  "description": "MMI S3 Chamak DEV",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch ./scss/main.scss:./resources/css/style.css --style compressed",
+    "prefix": "postcss ./public/css/style.css --use autoprefixer -d ./public/css/prefixed/"
+  },
+  "author": "Nicolas Filizzola",
+  "license": "ISC"
+}
