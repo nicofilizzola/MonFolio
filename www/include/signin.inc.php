@@ -50,10 +50,6 @@
             $result = mysqli_stmt_get_result($stmt);
             $found_pwd = mysqli_fetch_assoc($result)['user_pwd'];
             
-/*
-ERROR HERE
-*/
-
             // IF PASSWORD NOT FOUND
             if (empty($found_pwd)){
                 

@@ -18,7 +18,7 @@
         <body>
 
             <nav>
-            <a href="">
+            <a href="index.php">
                 <img src="" alt="logo">
             </a>
         ';
@@ -31,9 +31,13 @@
 
     // FOR USER - interface.php
     signout_btn();
+    bo_btn();
 
     echo '
             </nav>
     ';
+
+
+   
 
     

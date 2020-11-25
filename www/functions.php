@@ -49,8 +49,19 @@
 	function display($creator_id, $category_id, $type_id, $tag_id){
 		require("include/conn.inc.php");
 
+
 		/* ********************************
-			OPTION 1 : DISPLAY PROJECT BY CREATOR
+			OPTION 1 : DISPLAY NEWEST
+		 ********************************* */
+
+		function display_newest($conn){
+			$sql = "SELECT * FROM project ORDER BY project_id DESC";
+			
+			get_project_data_execute($sql, $conn, 0);
+		}
+
+		/* ********************************
+			OPTION 2 : DISPLAY PROJECT BY CREATOR
 		 ********************************* */
 		
 		function display_by_creator($creator_id, $conn){
@@ -60,15 +71,7 @@
 		}
 		
 
-		/* ********************************
-			OPTION 2 : DISPLAY NEWEST
-		 ********************************* */
-
-		function display_newest($conn){
-			$sql = "SELECT * FROM project ORDER BY DESC";
-			
-			get_project_data_execute($sql, $conn, 0);
-		}
+		
 
 
 		/* ********************************
@@ -104,6 +107,7 @@
 					display_project($this_project, $project_name, $media_cover, $project_cat, $project_type, $tags_array, $creator_id, $conn);
 				}
 			} else {
+				
 				error_empty($error_code);
 			}
 		}
@@ -129,14 +133,66 @@
 			}	
 		}
 
+		// DISPLAY USER'S PROJECT
+		function display_default($project_name, $media_first, $project_id){
+			echo '
+				<div>
+					<h4>'.$project_name.'</h4>
+					<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+					<form method="get" action="project.php">
+						<input type="hidden" name="project_id" value="'.$project_id.'">
+						<button type="submit" name="project_go">Go !</button>
+					</form>';
+			}
 
+		// DISPLAY OWN PROJECT
+		function display_backoffice($project_name, $media_first, $project_id){
+			echo '
+				<div>
+					<h4>'.$project_name.'</h4>
+					<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+					<form method="get" action="project.php">
+						<input type="hidden" name="project_id" value="'.$project_id.'">
+						<button type="submit" name="project_go">Go !</button>
+					</form>
+					<form method="get" action="backoffice.inc.php">
+						<button type="submit" name="project-edit_submit">Éditer</button>
+						<button type="submit" name="project-delete_submit">Supprimer</button>
+					</form>';
+		}
+
+		// DECIDE WHICH FROM THE LAST DISPLAY FUNCTIONS TO USE
+		function decide_display($creator_id, $project_name, $media_first, $project_id){
+
+			// IF USER IS CONNECTED
+			if(isset($_SESSION['my_user_id'])){
+
+				// IF THE PROJECT'S CREATOR ID IS THE SAME AS THE USER'S ID
+				if($creator_id == $_SESSION['my_user_id']){
+
+					display_backoffice($project_name, $media_first, $project_id);
+
+				// IF IT IS NOT
+				} else {
+
+					display_default($project_name, $media_first, $project_id);
+
+				}
+
+			// IF USER IS NOT CONNECTED
+			} else {
+
+				display_default($project_name, $media_first, $project_id);
+
+			}
+		}
+
+	
 		/* ********************************
 		 DISPLAY INDIVIDUAL PROJECT
 		 ********************************* */
 		
 		function display_project($project_id, $project_name, $media_first, $project_cat, $project_type, $tags_array, $creator_id, $conn){
-
-			
 
 			// IF NO CATEGORY SELECTED OR IF SELECTED CATEGORY MATCHES
 			if($_GET['cat'] == "" || $project_cat == $_GET['cat']){
@@ -152,14 +208,7 @@
 						echo "Creator id : ".$creator_id;
 
 						// DISPLAY PROJECT BOX
-						echo '
-							<div>
-								<h4>'.$project_name.'</h4>
-								<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
-								<form method="get" action="project.php">
-									<input type="hidden" name="project_id" value="'.$project_id.'">
-									<button type="submit" name="project_go">Go !</button>
-								</form>';
+						decide_display($creator_id, $project_name, $media_first, $project_id);
 
 					// IF TAG SELECTED
 					} elseif ($tags_array !== NULL) {
@@ -175,17 +224,10 @@
 								echo "Creator id : ".$creator_id;
 
 								// DISPLAY PROJECT BOX
-								echo '
-								<div>
-									<h4>'.$project_name.'</h4>
-									<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
-									<form method="get" action="project.php">
-										<input type="hidden" name="project_id" value="'.$project_id.'">
-										<button type="submit" name="project_go">Go !</button>
-									</form>';
+								decide_display($creator_id, $project_name, $media_first, $project_id);
+
 							}
 						}
-
 					}
 
 					display_tags($project_id, $conn);
@@ -229,18 +271,19 @@
 
 
 		/* ********************************
-			EXECUTE
+			EXECUTE // ERRORRRRRRRRRRRRR
 		 ********************************* */
 
 
-		if(isset($creator_id)){
+		if(isset($creator_id) && $creator_id != ""){
 
 			display_by_creator($creator_id, $conn);
+			var_dump($creator_id);
 
 		} else {
 
 			display_newest($conn);
 
-		}
+		} 
 
 	}

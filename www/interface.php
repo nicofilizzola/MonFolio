@@ -73,6 +73,15 @@
             return;
         }
 
+        function bo_btn(){
+            echo '
+                <form action="backoffice.php">
+                    <button type="submit" name="backoffice_submit" method="POST">Mes projets</button>
+                </form>
+            ';
+        }
+
+
 
     // ONLY FOR VISITORS (NOT CONNECTED)
     } else {
@@ -181,6 +190,10 @@
                 </article>
             ';
 
+        }
+
+        function bo_btn(){
+            return;
         }
 
     }
