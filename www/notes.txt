@@ -1,0 +1,7 @@
+à faire
+
+pour modifier projet, minimum un tag, maximum 3 (js)
+
+security problem: anyone can edit anyone's project via URL
+
+close all statements and mysqli connections

@@ -1,5 +1,13 @@
 <?php
 
+	$cat = array(
+		'',
+		'Graphisme',
+		'Audiovisuel',
+		'Web Design',
+		'Développement'
+	);
+
 	// START SESSION AND GET CATEGORY
 	function startup(){
 		session_start();
@@ -70,10 +78,7 @@
 			get_project_data_execute($sql, $conn, 1);
 			
 		}
-		
-
-		
-
+	
 
 		/* ********************************
 			SEARCH PROJECT IMGS AND DISPLAY
@@ -160,10 +165,12 @@
 						<input type="hidden" name="project_id" value="'.$project_id.'">
 						<button type="submit" name="project-go_submit">Éditer</button>
 					</form>
-					<form method="get" action="include/edit.inc.php">
-						<button type="submit" name="project-delete_submit">Supprimer</button>
+					<form method="get" action="include/editor.inc.php">
+						<input type="hidden" name="project_id" value="'.$project_id.'">
+						<button class="deleteBtnBO" type="submit" name="project-delete_submit">Supprimer</button>
 					</form>
 				</div>';
+
 		}
 
 		// DECIDE WHICH FROM THE LAST DISPLAY FUNCTIONS TO USE
@@ -249,8 +256,6 @@
 		if(isset($creator_id) && $creator_id != ""){
 
 			display_by_creator($creator_id, $conn);
-			echo'this projects\'s creator is : <br>';
-			var_dump($creator_id);
 
 		} else {
 
@@ -260,14 +265,11 @@
 
 	}
 
-
-
-
 	/* *************************
 	BACK OFFICE
 	************************* */
 
-	function edit_project(){
+	function edit_project($cat){
 		require("include/conn.inc.php");
 
 		$project_data = 0;
@@ -334,11 +336,11 @@
 				$project_media_id
 			);		
 			
-			edit_form($project_data);
+			edit_form($project_data, $cat);
 
 		} else {
 
-			edit_form(0);
+			edit_form(0, $cat);
 
 		}
 		
@@ -346,7 +348,7 @@
 	}
 
 	// EDITOR INTERFACE
-	function edit_form($project_data){
+	function edit_form($project_data, $cat){
 
 		// IF NEW PROJECT
 		if ($project_data == 0){
@@ -382,7 +384,7 @@
 					if ($row['tag_id'] > 0){
 
 						echo'
-						<input type="checkbox" name="tag" value="'.$row['tag_id'].'">
+						<input type="checkbox" name="tag[]" value="'.$row['tag_id'].'">
 							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
 						';
 
@@ -413,12 +415,22 @@
 				<input value="'.$project_data[3].'" name="link" type="text" placeholder="T\'as un lien vers ce projet ? Donne le nous ici" required>
 
 				<select value="'.$project_data[4].'" name="cat">
-					<option value="">Catégorie</option>
-					<option value="1">Graphisme</option>
-					<option value="2">Audiovisuel</option>
-					<option value="3">Web Design</option>
-					<option value="4">Développement</option>
-				</select>';
+					<option>Catégorie</option>
+				';
+
+			for ($i = 1; $i < 5; $i++){
+				if ($i == $project_data[4]){
+					echo'
+						<option value="'.$project_data[4].'" selected="selected">'.$cat[$i].'</option>
+						';
+				}else{
+					echo'
+						<option value="'.$i.'" selected="selected">'.$cat[$i].'</option>
+						';
+				}
+			}
+
+			echo'</select>';
 
 			// IF SOLO PROJECT
 			if($project_data[5] == 1){
@@ -452,23 +464,19 @@
 			// CHECK IF TAGS MATCH
 			while ($row = mysqli_fetch_assoc($result)){
 
-				for ($i = 0; $i < count($this_tags); $i++){	
+				if(in_array($row['tag_name'], $this_tags)){
 
-					if($row['tag_name'] == $this_tags[$i] && !empty($this_tags[$i])){
+					echo'
+					<input type="checkbox" name="tag[]" value="'.$row['tag_id'].'" checked="checked">
+						<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
+					';
+				
+				} else {
 
-						echo'
-						<input type="checkbox" name="tag" value="'.$row['tag_id'].'" checked="checked">
-							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
-						';
-					
-					} else {
-
-						echo'
-						<input type="checkbox" name="tag" value="'.$row['tag_id'].'">
-							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
-						';
-
-					}
+					echo'
+					<input type="checkbox" name="tag[]" value="'.$row['tag_id'].'">
+						<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
+					';
 
 				}
 
@@ -582,5 +590,121 @@
 		}	
 
 		
+
+	}
+
+
+	/***********************
+	DISPLAY A SINGLE PROJECT - project.php
+	**********************/
+
+	function show_project($project_id, $cat){
+
+		require('include/conn.inc.php');
+
+		// IF NO PROJECT ID
+		if(empty($_GET['project_id'])){
+
+			header('Location: index.php');
+
+		// IF PROJECT ID SET
+		} else {
+
+			$project_id = $_GET['project_id'];
+			$sql = "SELECT * FROM project where project_id = '$project_id'";
+			$result = mysqli_query($conn, $sql);
+			$project_data = mysqli_fetch_assoc($result);
+			$cat_index = $project_data['category_id'];
+
+			$sql2 = "SELECT * FROM media, project_media WHERE project_media.project_id = '$project_id' AND media.media_id = project_media.media_id";
+			$result2 = mysqli_query($conn, $sql2);
+
+			$sql3 = "SELECT * FROM tag, project_tag WHERE project_tag.project_id = '$project_id' AND tag.tag_id = project_tag.tag_id";
+			$result3 = mysqli_query($conn, $sql3);
+
+			echo '
+			<article>
+				<div class="swiper-container">
+					<!-- Additional required wrapper -->
+					<div class="swiper-wrapper">';
+
+			while($row2 = mysqli_fetch_assoc($result2)){
+				$media_type = $row2['media_type'];
+				$media_id = $row2['media_id'];
+				$media_path = $row2['media_path'];
+
+				// IF THIS MEDIA IS IMG
+				if ($media_type == 1){
+
+					echo '
+						<div class="swiper-slide">
+							<img src="'.$media_path.'">
+						</div>
+					';
+
+				// IF MEDIA TYPE IS VIDEO
+				} elseif($media_type == 2){
+
+					echo '
+						<div class="swiper-slide">
+								<iframe width="560" height="315" src="'.$media_path.'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
+					';
+				}
+
+			}
+
+			echo'
+					</div>
+					<!-- If we need pagination -->
+					<div class="swiper-pagination"></div>
+
+				</div>
+
+			</article>';
+
+			echo '
+			<article>
+
+				<h3>'.$project_data['project_name'].'</h3>
+
+				<p>'.$project_data['project_txt'].'</p>
+
+				<a href="'.$project_data['project_link'].'" target="_blank">Clique ici pour en savoir plus</a>
+
+				<p><span class="cat">'.$cat[$cat_index].'</span></p>';
+
+			// IF SOLO PROJECT
+			if ($project_data['type_id'] == 1){
+
+				echo '<p><span class="type">Projet solo</span></p>';
+
+			// IF TEAM PROJECT
+			} elseif ($project_data['type_id'] == 2){
+
+				echo '<p><span class="type">Projet en équipe</span></p>';
+
+			}
+
+			echo '<p>';
+
+			while ($row3 = mysqli_fetch_assoc($result3)){
+
+				if ($row3['tag_id'] != 0){
+
+					echo '<span class="tag">'.$row3['tag_name'].'</span> ';
+
+				}
+
+			}
+
+			echo '
+				</p>
+			</article>
+			';
+
+			
+
+		}
 
 	}

@@ -18,37 +18,35 @@
 			// FOR EVERYONE
 			filter_searchbar();
 
+			// NEW PROJECT BUTTON - interface.php
+			np_btn();
+
+			// PROJECTS DISPLAY - functions.php
+			home();
+
 		?>
-
-		
-
-			<div>
-			
-				<div>
-					<img src="" alt="">
-					<p>Titre projet</p>
-				</div>
-			
-			</div>
-
-	<section>
-		
-	<?php
-		// NEW PROJECT BUTTON - interface.php
-		np_btn();
-
-		// PROJECTS DISPLAY - functions.php
-		home();
-
-	?>
 
 	</section>
 
-
 	
-
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/a8MXMttH6QE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<script>
 	
+		var deleteBtns = document.querySelectorAll(".deleteBtnBO");
+		var i = 0;
+
+		deleteBtns.forEach(element => {
+
+			element.addEventListener("click", function(event){
+
+				if(!window.confirm("Tu es sûr de toi ?")){
+					event.preventDefault();
+				};
+
+			});
+		});
+
+	</script>
+
 	<footer>
 
 	</footer>

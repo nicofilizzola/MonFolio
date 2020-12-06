@@ -4,29 +4,51 @@
 
     function filter_searchbar(){
 
+        $cat = array(
+			'',
+			'Graphisme',
+			'Audiovisuel',
+			'Web Design',
+			'Développement'
+		);
+
         echo'
             <article>
                 <div>
                     <h2>Projets à découvrir</h2>
                     <form action="index.php" method="get">
-                        <select name="cat" id="">
+                        <select name="cat">
                             <option value="">Catégories</option>
-                            <option value="1">Graphisme</option>
-                            <option value="2">Audiovisuel</option>
-                            <option value="3">Web Design</option>
-                            <option value="4">Développement</option>
+                            <option value="">'.$cat[1].'</option>
+                            <option value="2">'.$cat[2].'</option>
+                            <option value="3">'.$cat[3].'</option>
+                            <option value="4">'.$cat[4].'</option>
                         </select>
-                        <select name="type" id="">
+                        <select name="type">
                             <option value="">Type de projet</option>
                             <option value="1">Individuel</option>
                             <option value="2">Collectif</option>
                         </select>
-                        <select name="tag" id="">
-                            <option value="">Tags</option>
-                            <option value="1">Tag 1</option>
-                            <option value="2">Tag 2</option>
-                            <option value="3">Tag 3</option>
-                            <option value="4">Tag 4</option>
+                        <select name="tag">
+                            <option value="">Tags</option>';
+
+                          
+        require_once('include/conn.inc.php');
+        $sql = 'SELECT * FROM tag';
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_assoc($result)){
+            $this_tag_id = $row['tag_id'];
+            $this_tag_name = $row['tag_name'];
+
+            echo '
+                <option value="'.$this_tag_id.'">'.$this_tag_name.'</option>
+            ';
+            var_dump($result);
+        }
+        mysqli_close($conn);
+        
+                            
+        echo'
                         </select>
                         <button type="submit">Rechercher</button>
                     </form>	

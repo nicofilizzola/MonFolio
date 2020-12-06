@@ -5,10 +5,10 @@
     // IF DELETE PROJECT
     if (isset($_GET['project-delete_submit'])){
 		$project_id = $_GET['project_id'];
-		$sql = "DELETE FROM project WHERE user_id = $project_id";
+		$sql = "DELETE FROM project WHERE project_id = '$project_id'";
 		mysqli_query($conn, $sql);
 
-        header('Location: ../editor.php?project-delete=success');
+        header('Location: ../backoffice.php?project-delete=success');
         exit();
 
 
@@ -131,7 +131,6 @@
                 }
 
                 $media_type_db = 2;
-                
                 $video_link = $_POST['video'];
                 $video_link_separated = explode('watch?v=', $video_link);
                 $yt_id = end($video_link_separated);
@@ -182,26 +181,22 @@
 
         }
         
-        
-        
-        
-
-
-    
     
     // IF MODIFY EXISTING PROJECT TEXTUAL INFO
     } elseif (isset($_POST['edit-project_submit'])) {
 
         // ERROR HANDLER : IF ANY EMPTY INPUT
-        if (empty($_POST['name']) || empty($_POST['txt']) || empty($_POST['link']) || empty($_POST['cat']) || empty($_POST['type'])){
+        if (empty($_POST['name']) || empty($_POST['txt']) || empty($_POST['link']) || empty($_POST['cat']) || empty($_POST['type']) || empty($_POST['tag'])){
 
             header('Location: ../editor.php?project_id='.$_POST['edit-project_submit'].'&project-edit_submit=&error=edit_0');
             exit();
 
         } else {
 
+            $project_id = $_POST['edit-project_submit'];
+
             // NEW STATEMENT: UPDATE SQL ROW WITH NEW DATA
-            $sql = "SQL UPDATE project, tag, project_tag SET project.project_name = ?, project.project_txt = ?, project.project_link = ?, project.category_id = ?, project.type_id = ?, project_tag.tag_id = ? WHERE project_id = ? AND project.project_id = project_tag.project_id AND project_tag.tag_id = tag.tag_id";
+            $sql = "UPDATE project SET project_name = ?, project_txt = ?, project_link = ?, category_id = ?, type_id = ? WHERE project_id = '$project_id'";
             $stmt = mysqli_stmt_init($conn);
 
             // IF STATEMENT DOESN'T WORK
@@ -210,27 +205,53 @@
                 header('Location: ../editor.php?project_id='.$_POST['edit-project_submit'].'&error=mysql_stmt_0');
                 exit();
 
+            // IF NO ERROR
             } else {
 
+                session_start();
                 $project_name = $_POST['name'];
                 $project_txt = $_POST['txt'];
                 $project_link = $_POST['link'];
                 $project_cat = $_POST['cat'];
                 $project_type = $_POST['type'];
+                $project_user = $_SESSION['my_user_id'];
 
-                // THIS IS AN ARRAY IF MULTIPLE TAGS WERE SELECTED
-                // IDEA : MAKE A MAX NUMBER OF TAGS (3) AND CREATE PROJECT_TAG LINKS WHERE TAG ID IS NULL IF THE LIMIT ISN'T REACHED
-                
                 $project_tag = $_POST['tag'];
 
-                /*
+                // IF THERE'S ONE TAG
+                if (count($project_tag) == 1){
 
-                MISSING NEXT STEPS
+                    array_push($project_tag, 0, 0);
 
-                */
+                // IF THERE ARE TWO TAGS
+                }elseif (count($project_tag) == 2){
 
+                    array_push($project_tag, 0);
+                    
+                } 
 
-               // mysqli_stmt_bind_param($stmt, )
+                // VARIABLES FOR EACH TAG (NULL IF NO TAG)
+                $first_tag = $project_tag[0];
+                $second_tag = $project_tag[1];
+                $third_tag = $project_tag[2];
+
+                mysqli_stmt_bind_param($stmt, 'sssss', $project_name, $project_txt, $project_link, $project_cat, $project_type);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+
+                // UPDATE TAGS
+                $sql1 = "DELETE FROM project_tag WHERE project_id = '$project_id'";
+                $sql2 = "INSERT INTO project_tag(project_id, tag_id) VALUES ('$project_id', '$first_tag')";
+                $sql3 = "INSERT INTO project_tag(project_id, tag_id) VALUES ('$project_id', '$second_tag')";
+                $sql4 = "INSERT INTO project_tag(project_id, tag_id) VALUES ('$project_id', '$third_tag')";
+
+                mysqli_query($conn, $sql1);
+                mysqli_query($conn, $sql2);
+                mysqli_query($conn, $sql3);
+                mysqli_query($conn, $sql4);
+
+                header('Location: ../editor.php?project_id='.$project_id.'$project_edit=success');
+                exit();
 
             }
 
@@ -240,7 +261,6 @@
 
     // CREATE NEW PROJECT
     } elseif (isset($_POST['new-project_submit'])){
-
 
         // NEW STATEMENT: INSERT NEW PROJECT'S DATA INTO DB
         $sql =  "INSERT INTO project(project_name, project_txt, project_link, category_id, type_id, user_id) VALUES (?, ?, ?, ?, ?, ?); ";
@@ -263,7 +283,7 @@
         } else {
 
             // ERROR HANDLER : IF ANY EMPTY INPUT
-            if (empty($_POST['name']) || empty($_POST['txt']) || empty($_POST['link']) || empty($_POST['cat']) || empty($_POST['type'])){
+            if (empty($_POST['name']) || empty($_POST['txt']) || empty($_POST['link']) || empty($_POST['cat']) || empty($_POST['type']) || empty($_POST['tag'])){
 
                 header('Location: ../editor.php?new-project_submit=&error=new_0');
                 exit();
@@ -297,48 +317,26 @@
                 $project_type = $_POST['type'];
                 $project_user = $_SESSION['my_user_id'];
 
-                // IF USER SELECTED TAGS
-                if (isset($_POST['tag'])){
+                $project_tag = $_POST['tag'];
 
-                    $project_tag = $_POST['tag'];
+                // IF THERE'S ONE TAG
+                if (count($project_tag) == 1){
 
-                    // IF THERE ARE MULTIPLE TAGS
-                    if(is_array($project_tag)){
+                    array_push($project_tag, 0, 0);
 
-                        // IF THERE ARE TWO TAGS
-                        if (count($project_tag) == 2){
+                // IF THERE ARE TWO TAGS
+                }elseif (count($project_tag) == 2){
 
-                            $tag_amount = 2;
-                            array_push($project_tag, 0);
-                            //$project_tag[2] = 0;
+                    array_push($project_tag, 0);
+                    
+                } 
 
-                        // IF THERE ARE THREE TAGS
-                        } else {
+                // VARIABLES FOR EACH TAG (NULL IF NO TAG)
+                $first_tag = $project_tag[0];
+                $second_tag = $project_tag[1];
+                $third_tag = $project_tag[2];
 
-                            $tag_amount = 3;
-
-                        }
-  
-                    // IF THERE'S ONLY ONE TAG
-                    } else {
-
-                        $project_tag = array($project_tag, 0, 0);
-
-                    }
-
-                    // VARIABLES FOR EACH TAG (NULL IF NO TAG)
-                    $first_tag = $project_tag[0];
-                    $second_tag = $project_tag[1];
-                    $third_tag = $project_tag[2];
-
-                } else {
-
-                    $first_tag = 0;
-                    $second_tag = 0;
-                    $third_tag = 0;
-
-                }
-
+                $media_type_db = 1;
                 $media = $_FILES['media'];
                 $media_name = $_FILES['media']['name'];
                 $media_tmp_name = $_FILES['media']['tmp_name'];
@@ -366,7 +364,7 @@
 
                             mysqli_stmt_bind_param($stmt, 'ssssss', $project_name, $project_txt, $project_link, $project_cat, $project_type, $project_user);
                             mysqli_stmt_execute($stmt);
-                            mysqli_stmt_bind_param($stmt2, 'ss', $media_type, $media_destination);
+                            mysqli_stmt_bind_param($stmt2, 'ss', $media_type_db, $media_destination);
                             mysqli_stmt_execute($stmt2);
 
                             // CLOSE STATEMENTS
@@ -398,7 +396,7 @@
                             mysqli_query($conn, $sql_other2);
                             mysqli_query($conn, $sql_other3);
 
-                            mysqli_close($conn);
+                            //mysqli_close($conn);
             
                             header('Location: ../backoffice.php?new-project=success');
                             exit();
