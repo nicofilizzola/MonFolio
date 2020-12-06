@@ -34,9 +34,9 @@
 		var deleteBtns = document.querySelectorAll(".deleteBtnBO");
 		var i = 0;
 
-		deleteBtns.forEach(element => {
+		deleteBtns.forEach(btn => {
 
-			element.addEventListener("click", function(event){
+			btn.addEventListener("click", function(event){
 
 				if(!window.confirm("Tu es sûr de toi ?")){
 					event.preventDefault();
@@ -47,9 +47,8 @@
 
 	</script>
 
-	<footer>
+	<?php
 
-	</footer>
-	
-</body>
-</html>
+		require('footer.php');
+
+	?>

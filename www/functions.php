@@ -215,10 +215,6 @@
 					// IF NO TAG SELECTED
 					if($_GET['tag'] == ""){
 
-						echo "Project id : ".$project_id;
-						echo "<br>";
-						echo "Creator id : ".$creator_id;
-
 						// DISPLAY PROJECT BOX
 						decide_display($creator_id, $project_name, $media_first, $project_id);
 
@@ -230,10 +226,6 @@
 
 							// IF TAG MATCHES
 							if($tags_array[$counter][0] == $_GET['tag']){
-
-								echo "Project id : ".$project_id;
-								echo "<br>";
-								echo "Creator id : ".$creator_id;
 
 								// DISPLAY PROJECT BOX
 								decide_display($creator_id, $project_name, $media_first, $project_id);
@@ -589,7 +581,16 @@
 
 		}	
 
-		
+		// CHECKBOX LIMIT
+		echo '
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+			$("input:checkbox").click(function() {
+			var bol = $("input:checkbox:checked").length >= 3;     
+			$("input:checkbox").not(":checked").attr("disabled",bol);
+			});
+		</script>
+		';
 
 	}
 
@@ -703,8 +704,105 @@
 			</article>
 			';
 
-			
-
 		}
 
+	}
+
+
+	/******************************
+	 * USER SEARCHBAR
+	 *****************************/
+
+	 function users_list(){
+
+		// IF ACCESSED searchuser.php DIRECTLY BY URL -> REDIRECT
+		if (!isset($_GET['user-search_submit'])){
+
+			header('Location: index.php');
+			exit();
+
+		// IF DIDN'T SEARCH ANYTHING
+		}elseif (empty($_GET['user'])){
+
+			header('Location: index.php?error=searchuser_0');
+			exit();
+
+		}else{
+
+			$input = $_GET['user'];
+
+			// IF SPECIALS ON INPUT
+			if (!preg_match("/^[a-zA-Z0-9]*$/", $input)){
+
+				header('Location: index.php?error=searchuser_1');
+				exit();
+
+			// IF EVERYTHING OK
+			}else{
+
+				require('include/conn.inc.php');
+
+				$sql = "SELECT user_id, user_uid, user_names, user_pic_id, user_title FROM user WHERE user_names LIKE ? OR user_uid LIKE ?";
+				$stmt = mysqli_stmt_init($conn);
+
+				// IF STATEMENT WRONG
+				if(!mysqli_stmt_prepare($stmt, $sql)){
+
+					header('Location: index.php?error=mysql_stmt_searchuser');
+					exit();
+
+				} else {
+
+					$stmt_input = '%'.$input.'%';
+					mysqli_stmt_bind_param($stmt, "ss", $stmt_input, $stmt_input);
+					mysqli_stmt_execute($stmt);
+					$result = mysqli_stmt_get_result($stmt);
+					$result_check = mysqli_num_rows($result);
+					
+					if($result_check > 0){
+						while($row = mysqli_fetch_assoc($result)){
+							$user_name = $row['user_names'];
+							$user_id = $row['user_id'];
+							$user_title = $row['user_title'];
+							$user_media = $row['user_pic_id'];
+
+							echo'
+								<div>
+							';
+
+							if ($user_media == 0){
+								
+								echo '<img src="resources/media/img/default.jpg" class="profilepic">';
+
+							}else{
+
+								// SQL SEARCH IMG AND ECHO IT
+
+							}
+							
+
+							echo'
+								<p>'.$user_name.'</p>
+								<p>'.$user_title.'</p>
+								<form method="get" action="index.php">
+									<button name="user_id" value="'.$user_id.'">Voir ses projets</button>
+								</form>
+							</div>
+
+						';
+
+						}
+
+					// IF NO RESULT
+					} else {
+
+						echo '
+						<div>
+							<h2>Déso, mais on n\'a pas pu trouver cet utilisateur</h2>
+						</div>';
+
+					}
+				}
+			}
+		}
 	}

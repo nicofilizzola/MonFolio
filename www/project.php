@@ -43,9 +43,8 @@
     
     </script>
 
-	<footer>
+    <?php
 
-	</footer>
-	
-</body>
-</html>
+        require('footer.php');
+
+    ?>

@@ -59,9 +59,9 @@
 
     function user_searchbar(){
         echo '
-            <form action="" method="get">
-                <input type="text" name="" id="" placeholder="Rechercher un utilisateur">
-                <button>Rechercher</button>
+            <form action="searchuser.php" method="get">
+                <input type="text" name="user" placeholder="Rechercher un utilisateur">
+                <button name="user-search_submit">Rechercher</button>
             </form>
         ';
     }

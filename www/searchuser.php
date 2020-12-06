@@ -10,16 +10,12 @@
 
 ?>
 
-    <section>
 
+<?php
 
-	<section>
-		
-	<?php
+    // USERS LIST - functions.php
+    users_list();
 
-		// EDIT PROJECT INTERFACE - functions.php
-		edit_project($cat);
+    require('footer.php');
 
-		require('footer.php');
-
-	?>
+?>
