@@ -100,10 +100,9 @@
 					
 					
 
-					$sql_img = "SELECT media.media_path FROM media, project_media, project WHERE project.project_id = project_media.project_id AND project_media.media_id = media.media_id AND project.project_id = '$this_project'";
+					$sql_img = "SELECT media.media_path FROM media, project_media, project WHERE project.project_id = project_media.project_id AND project_media.media_id = media.media_id AND project.project_id = '$this_project' AND media.media_type = 1 LIMIT 1";
 					$result_img = mysqli_query($conn, $sql_img);
-					$media_array = mysqli_fetch_assoc($result_img);
-					$media_cover = $media_array['media_path'];
+					$media_cover = mysqli_fetch_assoc($result_img)['media_path'];
 
 					display_project($this_project, $project_name, $media_cover, $project_cat, $project_type, $tags_array, $creator_id, $conn);
 				}
@@ -143,7 +142,8 @@
 					<form method="get" action="project.php">
 						<input type="hidden" name="project_id" value="'.$project_id.'">
 						<button type="submit" name="project_go">Go !</button>
-					</form>';
+					</form>
+				</div>';
 			}
 
 		// DISPLAY OWN PROJECT
@@ -156,10 +156,14 @@
 						<input type="hidden" name="project_id" value="'.$project_id.'">
 						<button type="submit" name="project_go">Go !</button>
 					</form>
-					<form method="get" action="backoffice.inc.php">
-						<button type="submit" name="project-edit_submit">Éditer</button>
+					<form method="get" action="editor.php">
+						<input type="hidden" name="project_id" value="'.$project_id.'">
+						<button type="submit" name="project-go_submit">Éditer</button>
+					</form>
+					<form method="get" action="include/edit.inc.php">
 						<button type="submit" name="project-delete_submit">Supprimer</button>
-					</form>';
+					</form>
+				</div>';
 		}
 
 		// DECIDE WHICH FROM THE LAST DISPLAY FUNCTIONS TO USE
@@ -231,45 +235,12 @@
 						}
 					}
 
-					display_tags($project_id, $conn);
-
-					echo '		
-						</div>
-					';
-
 				}
 
 				
 			} 
 			
 		}
-
-
-		/* ********************************
-		 DISPLAY TAGS
-		********************************* */
-
-		function display_tags($project_id, $conn){
-			// SQL QUERY TO GET TAGS
-			$sql_tags = "SELECT tag.tag_name, tag.tag_id FROM project, project_tag, tag WHERE project.project_id = project_tag.project_id AND project_tag.tag_id = tag.tag_id AND project.project_id = '$project_id'";
-			$result_tags = mysqli_query($conn, $sql_tags);
-			
-			// GET TAGS AND STOCK THEM IN $project_tags
-			$project_tags = array();
-			while ($row = mysqli_fetch_assoc($result_tags)){
-				$new_tag = $row['tag_name'];
-
-				array_push($project_tags, $new_tag);
-			}
-
-			// DISPLAY TAGS INSIDE $project_tags
-			for ($i = 0; $i < count($project_tags); $i++){
-				echo '
-					<span>'.$project_tags[$i].'</span>
-				';
-			}
-		}
-
 
 		/* ********************************
 			EXECUTE
@@ -278,6 +249,7 @@
 		if(isset($creator_id) && $creator_id != ""){
 
 			display_by_creator($creator_id, $conn);
+			echo'this projects\'s creator is : <br>';
 			var_dump($creator_id);
 
 		} else {
@@ -285,5 +257,330 @@
 			display_newest($conn);
 
 		} 
+
+	}
+
+
+
+
+	/* *************************
+	BACK OFFICE
+	************************* */
+
+	function edit_project(){
+		require("include/conn.inc.php");
+
+		$project_data = 0;
+
+		// IF SELECTED EDIT
+		if (isset($_GET['project_id'])){
+
+			$project_id = $_GET['project_id'];
+
+			// GET PROJECT'S DATA
+			$sql = "SELECT * FROM project, media, project_media WHERE project.project_id = '$project_id' AND project.project_id = project_media.project_id AND media.media_id = project_media.media_id";
+			// TAGS
+			$sql2 = "SELECT * FROM tag, project_tag WHERE project_tag.project_id = '$project_id' AND project_tag.tag_id = tag.tag_id";
+			// MEDIA
+			$sql3 = "SELECT * FROM media, project_media WHERE project_media.project_id = '$project_id' AND project_media.media_id = media.media_id";
+			$result = mysqli_query($conn, $sql);
+			$result2 = mysqli_query($conn, $sql2);
+			$result3 = mysqli_query($conn, $sql3);
+
+			$project_media = array();
+			$project_tags = array();
+			
+			while ($row = mysqli_fetch_assoc($result)){
+
+				$project_name = $row['project_name'];
+				$project_txt = $row['project_txt'];
+				$project_link = $row['project_link'];
+				$project_cat = $row['category_id'];
+				$project_type = $row['type_id'];
+
+			}
+
+			while ($row2 = mysqli_fetch_assoc($result2)){
+
+				$this_tag = $row2['tag_name'];
+				$project_tags[] = $this_tag;
+
+			}
+
+			while ($row3 = mysqli_fetch_assoc($result3)){
+
+				$this_media = $row3['media_path'];
+				$project_media[] = $this_media;
+
+				$this_media_type = $row3['media_type'];
+				$project_media_type[] = $this_media_type;
+
+				$this_media_id = $row3['media_id'];
+				$project_media_id[] = $this_media_id;
+
+			}
+
+			// INSERT DATA INTO ARRAY
+			$project_data = array(
+				$project_id,
+				$project_name,
+				$project_txt,			
+				$project_link,
+				$project_cat,			
+				$project_type,
+				$project_media,
+				$project_tags,
+				$project_media_type,
+				$project_media_id
+			);		
+			
+			edit_form($project_data);
+
+		} else {
+
+			edit_form(0);
+
+		}
+		
+
+	}
+
+	// EDITOR INTERFACE
+	function edit_form($project_data){
+
+		// IF NEW PROJECT
+		if ($project_data == 0){
+
+			echo 'new project';
+
+			echo '
+			<form action="include/editor.inc.php" method="POST" enctype="multipart/form-data">
+			
+				<input name="name" type="text" placeholder="Donne un titre à ton projet" required>
+				<textarea name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required></textarea>
+				<input name="link" type="text" placeholder="T\'as un lien vers ce projet ? Donne le nous ici" required>
+
+				<select name="cat">
+					<option value="">Catégorie</option>
+					<option value="1">Graphisme</option>
+					<option value="2">Audiovisuel</option>
+					<option value="3">Web Design</option>
+					<option value="4">Développement</option>
+				</select>
+				
+				<input type="radio" name="type" value="1">
+					<label for="1">Solo</label>
+				<input type="radio" name="type" value="2">
+					<label for="2">En équipe</label>';
+
+				require('include/conn.inc.php');
+				$sql = "SELECT * FROM tag";
+				$result = mysqli_query($conn, $sql);
+
+				while($row = mysqli_fetch_assoc($result)){
+
+					if ($row['tag_id'] > 0){
+
+						echo'
+						<input type="checkbox" name="tag" value="'.$row['tag_id'].'">
+							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
+						';
+
+					}
+					
+				}
+
+			echo '
+				<input type="file" name="media">
+				<input type="url" name="video" placeholder="Lien YouTube" disabled>
+				<p>Vu que ton projet n\'a pas encore été créé, tu ne peux pas ajouter un lien YouTube. Ajoute plutôt une image de couverture et reviens après avoir enregistré ton nouveau projet pour ajouter le lien de la vidéo ;)</p>
+				
+				<button type="submit" name="new-project_submit">Enregistrer</button>
+
+			</form>
+		';
+
+		// IF EDIT EXISTING PROJECT
+		} else {
+
+			echo 'edit project';
+
+			echo '
+			<form action="include/editor.inc.php" method="POST">
+			
+				<input value="'.$project_data[1].'" name="name" type="text" placeholder="Donne un titre à ton projet" required>
+				<textarea name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required>'.$project_data[2].'</textarea>
+				<input value="'.$project_data[3].'" name="link" type="text" placeholder="T\'as un lien vers ce projet ? Donne le nous ici" required>
+
+				<select value="'.$project_data[4].'" name="cat">
+					<option value="">Catégorie</option>
+					<option value="1">Graphisme</option>
+					<option value="2">Audiovisuel</option>
+					<option value="3">Web Design</option>
+					<option value="4">Développement</option>
+				</select>';
+
+			// IF SOLO PROJECT
+			if($project_data[5] == 1){
+
+				echo'
+				<input type="radio" name="type" value="1" checked="checked">
+					<label for="1">Solo</label>
+				<input type="radio" name="type" value="2">
+					<label for="2">En équipe</label>';
+
+			}elseif($project_data[5] == 2){
+
+				// IF TEAM PROJECT
+				echo'
+				<input type="radio" name="type" value="1">
+					<label for="1">Solo</label>
+				<input type="radio" name="type" value="2" checked="checked">
+					<label for="2">En équipe</label>';
+
+			}
+
+			// GET ALL TAGS
+			require('include/conn.inc.php');
+			$sql = "SELECT * FROM tag";
+			$result = mysqli_query($conn, $sql);
+			$this_tags = $project_data[7];
+			$this_media = $project_data[6];
+			$this_media_type = $project_data[8];
+			$this_media_id = $project_data[9];
+			
+			// CHECK IF TAGS MATCH
+			while ($row = mysqli_fetch_assoc($result)){
+
+				for ($i = 0; $i < count($this_tags); $i++){	
+
+					if($row['tag_name'] == $this_tags[$i] && !empty($this_tags[$i])){
+
+						echo'
+						<input type="checkbox" name="tag" value="'.$row['tag_id'].'" checked="checked">
+							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
+						';
+					
+					} else {
+
+						echo'
+						<input type="checkbox" name="tag" value="'.$row['tag_id'].'">
+							<label for="'.$row['tag_id'].'">'.$row['tag_name'].'</label>
+						';
+
+					}
+
+				}
+
+			}
+
+			echo '
+				
+				<button type="submit" name="edit-project_submit" value="'.$project_data[0].'">Enregistrer</button>
+
+			</form>
+			
+			<form action="include/editor.inc.php" method="POST" enctype="multipart/form-data">
+
+				<div class="swiper-container">
+					<!-- Additional required wrapper -->
+					<div class="swiper-wrapper">
+						<!-- Slides -->';
+
+					
+			// IMG SWIPER
+
+			for ($i = 0; $i < count($this_media); $i++){
+			//foreach ($this_media as $media){
+
+				echo'
+					<div class="swiper-slide">';
+
+				if ($this_media_type[$i] == 1){
+
+					echo'
+						<img src="'.$this_media[$i].'">';
+
+					if(count($this_media) > 1){
+
+						echo'
+							<input type="hidden" name="project_id" value="'.$project_data[0].'">
+							<button type="submit" class="deleteBtns" name="delete-media_submit" value="'.$this_media_id[$i].'">Supprimer cette image</button>
+					';
+	
+					}
+					
+				} elseif ($this_media_type[$i] == 2){
+
+					echo'
+						<iframe width="560" height="315" src="'.$this_media[$i].'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+					if(count($this_media) > 1){
+
+						echo'
+							<input type="hidden" name="project_id" value="'.$project_data[0].'">
+							<button type="submit" class="deleteBtns" name="delete-media_submit" value="'.$this_media_id[$i].'">Supprimer cette vidéo</button>
+					';
+	
+					}
+
+				}
+
+				
+
+				echo '</div>';
+
+			}
+						
+							
+			echo '		
+						</div>
+
+						<!-- If we need pagination -->
+						<div class="swiper-pagination"></div>
+					
+					</div>
+
+			
+
+					<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+					<script> 
+						var mySwiper = new Swiper(".swiper-container", {
+					
+							// If we need pagination
+							pagination: {
+							el: ".swiper-pagination",
+							}
+
+						});
+
+						var deleteBtns = document.querySelectorAll(".deleteBtns");
+						var i = 0;
+
+						deleteBtns.forEach(element => {
+
+							element.addEventListener("click", function(event){
+
+								if(!window.confirm("Tu es sûr de toi ?")){
+									event.preventDefault();
+								};
+
+							});
+						});
+
+					</script>
+
+					<input type="file" name="media">
+					<input type="url" name="video" placeholder="Lien YouTube">
+
+					<button type="submit" name="new-media_submit" value="'.$project_data[0].'">Enregistrer</button>
+
+				</form>
+
+			';
+
+		}	
+
+		
 
 	}

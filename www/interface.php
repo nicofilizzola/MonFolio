@@ -11,22 +11,22 @@
                     <form action="index.php" method="get">
                         <select name="cat" id="">
                             <option value="">Catégories</option>
-                            <option value="0">Graphisme</option>
-                            <option value="1">Audiovisuel</option>
-                            <option value="2">Web Design</option>
-                            <option value="3">Développement</option>
+                            <option value="1">Graphisme</option>
+                            <option value="2">Audiovisuel</option>
+                            <option value="3">Web Design</option>
+                            <option value="4">Développement</option>
                         </select>
                         <select name="type" id="">
                             <option value="">Type de projet</option>
-                            <option value="0">Individuel</option>
-                            <option value="1">Collectif</option>
+                            <option value="1">Individuel</option>
+                            <option value="2">Collectif</option>
                         </select>
                         <select name="tag" id="">
                             <option value="">Tags</option>
-                            <option value="0">Tag 1</option>
-                            <option value="1">Tag 2</option>
-                            <option value="2">Tag 3</option>
-                            <option value="3">Tag 4</option>
+                            <option value="1">Tag 1</option>
+                            <option value="2">Tag 2</option>
+                            <option value="3">Tag 3</option>
+                            <option value="4">Tag 4</option>
                         </select>
                         <button type="submit">Rechercher</button>
                     </form>	
@@ -87,7 +87,7 @@
         function np_btn(){
             echo '
                 <div>
-                    <form action="include/project_editor.php" method="get">
+                    <form action="editor.php" method="get">
 
                         <button type="submit" name="new-project_submit">Nouveau projet</button>	
                     
@@ -115,8 +115,21 @@
         function signin_form(){
             echo '
                 <article>
-                    <form action="include/signin.inc.php" method="POST">
-                        <input type="text" name="login" placeholder="Adresse email/Nom d\'utilisateur" required>
+                    <form action="include/signin.inc.php" method="POST">';
+
+            if (isset($_GET['email'])){
+
+                $email_cache = $_GET['email'];
+                echo '<input type="text" name="login" placeholder="Adresse email/Nom d\'utilisateur" value="'.$email_cache.'" required>';
+
+            }else{
+
+                echo '<input type="text" name="login" placeholder="Adresse email/Nom d\'utilisateur" required>';
+
+            }
+
+
+            echo '       
                         <input type="password" name="pwd" placeholder="Mot de passe" required>
                         <!-- 
                         <input type="checkbox" name="remember" value="Rester connecté">	

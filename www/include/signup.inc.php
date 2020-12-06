@@ -19,9 +19,6 @@
         // IF STATEMENT DOESN'T WORK
         if (!mysqli_stmt_prepare($stmt, $sql)){
 
-            /********************************
-             ERROR HERE
-             **********************************/
             header('Location: ../index.php?error=mysql_stmt_2');
             exit();
 
