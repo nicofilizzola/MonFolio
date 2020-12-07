@@ -776,6 +776,8 @@
 
 							}else{
 
+								/*$sql2 = "SELECT media.media_path FROM media, user WHERE user.user_pic_id = media.media_id AND user_id = '$user_id'";
+								$result2 = mysqli_query($)*/
 								// SQL SEARCH IMG AND ECHO IT
 
 							}
@@ -805,4 +807,98 @@
 				}
 			}
 		}
+	}
+
+
+	function user_info(){
+
+		// IF NOT OWN PROFILE
+		if(isset($_GET['user_id'])){
+
+			info($_GET['user_id']);
+
+		// IF BACKOFFICE
+		} elseif(isset($_SESSION['my_user_id'])) {
+
+			info($_SESSION['my_user_id']);
+
+		}
+
+	}
+
+	function info($user_id){
+
+		require('include/conn.inc.php');
+		$sql = "SELECT * FROM user WHERE user_id = '$user_id'";
+		$result = mysqli_query($conn, $sql);
+		$user_data = mysqli_fetch_assoc($result);
+
+		// IF USER HAS NO PROFILE PIC
+		if($user_data['user_pic_id'] == 0){
+
+			$media_path = 'resources/media/img/default.jpg';
+
+		// IF USER HAS PROFILE PIC
+		}else{
+
+			$sql2 = "SELECT media.media_path FROM media, user WHERE user.user_pic_id = media.media_id AND user_id = '$user_id'";
+			$result2 = mysqli_query($conn, $sql2);
+			$media_path = mysqli_fetch_assoc($result2)['media_path'];
+			mysqli_close($conn);
+
+		}
+
+		$user_names = $user_data['user_names'];
+		$user_title = $user_data['user_title'];
+		$user_txt = $user_data['user_txt'];
+		$user_uid = $user_data['user_uid'];
+
+		echo '
+			<div>
+				<div>
+					<img src="'.$media_path.'">';
+
+		//
+		if (isset($_SESSION['my_user_id'])){
+
+			if($_SESSION['my_user_id'] == $user_id){
+
+				echo'
+					<form action="include/profilepic.inc.php" method="post" enctype="multipart/form-data">
+						<input type="file" name="pic" required>
+						<button type="submit" name="pic_submit">Enregistrer nouvelle photo de profil</button>
+					</form>
+	
+					</div>
+					<div>
+						<form action="include/updateprofile.inc.php" method="post">
+							<input type="text" value="'.$user_names.'" name="user_name" placeholder="Ton nom" required>
+							<input type="text" value="'.$user_title.'" name="user_title" placeholder="Tu fais quoi ? (Développeur, Graphiste, ...)">
+							<textarea name="user_txt" placeholder="Dis-nous ton histoire">'.$user_txt.'</textarea>
+							<button type="submit" name="updateprofile_submit">Enregistrer</button>
+						</form>
+					</div>
+				</div>
+				';
+
+		}
+
+		} else {
+
+			echo'
+				</div>
+				<div>
+					<h2>'.$user_names.'</h2>
+					<h4>'.$user_title.'</h4>
+					<p>@'.$user_uid.'</p>
+					<p>'.$user_txt.'</p>
+				</div>
+			</div>
+		';
+
+
+		}
+
+		
+
 	}

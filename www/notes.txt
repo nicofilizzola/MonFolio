@@ -1,8 +1,10 @@
 à faire
 
 
-security problem: anyone can edit anyone's project via URL
+security problem: anyone can edit anyone's project via URL -> change get to post
 
-profile picture
+edit profile -> updateprofile.inc.php
+
+cache-save project info when new project if error
 
 close all statements and mysqli connections

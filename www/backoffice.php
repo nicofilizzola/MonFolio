@@ -15,8 +15,8 @@
 
 		<?php
 
-			// FOR EVERYONE
-			filter_searchbar();
+			// USER'S DETAILS - functions.php
+			user_info();
 
 			// NEW PROJECT BUTTON - interface.php
 			np_btn();

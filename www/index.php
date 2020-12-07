@@ -25,6 +25,8 @@
 		
 	<?php
 
+		// functions.php
+		user_info();
 		home();
 
 	?>
