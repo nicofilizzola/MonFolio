@@ -107,8 +107,8 @@
 
         function sign_btns(){
             echo'
-                <button>Se connecter</button>
-                <button>Rejoindre</button>  
+                <button class="btn btn--white">Se connecter</button>
+                <button class="btn btn--accent">Rejoindre</button>  
             ';
         }
 

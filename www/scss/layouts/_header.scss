@@ -1,0 +1,13 @@
+header{
+    max-width: 98%;
+    margin: auto;
+}
+
+.header{
+    &__logo{
+        max-width: 130px;
+    }
+    >nav{
+        align-items: flex-end;
+    }
+}
