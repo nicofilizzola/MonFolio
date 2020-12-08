@@ -758,6 +758,7 @@
 					mysqli_stmt_execute($stmt);
 					$result = mysqli_stmt_get_result($stmt);
 					$result_check = mysqli_num_rows($result);
+					mysqli_stmt_close($stmt);
 					
 					if($result_check > 0){
 						while($row = mysqli_fetch_assoc($result)){
@@ -776,9 +777,12 @@
 
 							}else{
 
-								/*$sql2 = "SELECT media.media_path FROM media, user WHERE user.user_pic_id = media.media_id AND user_id = '$user_id'";
-								$result2 = mysqli_query($)*/
-								// SQL SEARCH IMG AND ECHO IT
+								$sql2 = "SELECT media.media_path FROM media, user WHERE user.user_pic_id = media.media_id AND user_id = '$user_id'";
+								$result2 = mysqli_query($conn, $sql2);
+								$media_path = mysqli_fetch_assoc($result2)['media_path'];
+								mysqli_close($conn);
+
+								echo '<img src="'.$media_path.'" class="profilepic">';
 
 							}
 							
@@ -818,7 +822,7 @@
 			info($_GET['user_id']);
 
 		// IF BACKOFFICE
-		} elseif(isset($_SESSION['my_user_id'])) {
+		} elseif(isset($_SESSION['my_user_id']) && strpos($_SERVER['REQUEST_URI'], 'backoffice.php')){
 
 			info($_SESSION['my_user_id']);
 
@@ -859,30 +863,26 @@
 					<img src="'.$media_path.'">';
 
 		//
-		if (isset($_SESSION['my_user_id'])){
+		if (isset($_SESSION['my_user_id']) && $_SESSION['my_user_id'] == $user_id){
 
-			if($_SESSION['my_user_id'] == $user_id){
+			echo'
+				<form action="include/profilepic.inc.php" method="post" enctype="multipart/form-data">
+					<input type="file" name="pic" required>
+					<button type="submit" name="pic_submit">Enregistrer nouvelle photo de profil</button>
+				</form>
 
-				echo'
-					<form action="include/profilepic.inc.php" method="post" enctype="multipart/form-data">
-						<input type="file" name="pic" required>
-						<button type="submit" name="pic_submit">Enregistrer nouvelle photo de profil</button>
-					</form>
-	
-					</div>
-					<div>
-						<form action="include/updateprofile.inc.php" method="post">
-							<input type="text" value="'.$user_names.'" name="user_name" placeholder="Ton nom" required>
-							<input type="text" value="'.$user_title.'" name="user_title" placeholder="Tu fais quoi ? (Développeur, Graphiste, ...)">
-							<textarea name="user_txt" placeholder="Dis-nous ton histoire">'.$user_txt.'</textarea>
-							<button type="submit" name="updateprofile_submit">Enregistrer</button>
-						</form>
-					</div>
 				</div>
-				';
-
-		}
-
+				<div>
+					<form action="include/updateprofile.inc.php" method="post">
+						<input type="text" value="'.$user_names.'" name="user_name" placeholder="Ton nom" required>
+						<input type="text" value="'.$user_title.'" name="user_title" placeholder="Tu fais quoi ? (Développeur, Graphiste, ...)">
+						<textarea name="user_txt" placeholder="Dis-nous ton histoire">'.$user_txt.'</textarea>
+						<button type="submit" name="updateprofile_submit">Enregistrer</button>
+					</form>
+				</div>
+			</div>
+			';
+			
 		} else {
 
 			echo'
