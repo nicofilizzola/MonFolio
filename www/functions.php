@@ -858,11 +858,11 @@
 		$user_uid = $user_data['user_uid'];
 
 		echo '
-			<div>
+			<div class="flex userlist__element">
 				<div>
 					<img src="'.$media_path.'">';
 
-		//
+		
 		if (isset($_SESSION['my_user_id']) && $_SESSION['my_user_id'] == $user_id){
 
 			echo'

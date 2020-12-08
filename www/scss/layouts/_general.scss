@@ -1,25 +1,7 @@
 .flex{
     display: flex;
 
-    &-jc-sb{
-        justify-content: space-between;
-    }
-    &-jc-c{
-        justify-content: center;
-    }
-    
-    &-ai-c{
-        align-items: center;
-    }
-    
-    &-fd-c{
-        flex-direction: column;
-    }
-    &-ai-fe{
-        align-items: flex-end;
-    }
-    &-fd-c{
-        flex-wrap: wrap;
+    &--col{
         flex-direction: column;
     }
 }
