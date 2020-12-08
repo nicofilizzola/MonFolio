@@ -20,11 +20,11 @@
         </head>
 
         <body>
-
-            <nav>
+            <header class="flex flex-jc-sb flex-ai-c">
             <a href="index.php">
-                <img src="" alt="logo">
+                <img src="resources/img/logo.png" alt="logo" class="header__logo">
             </a>
+            <nav class="flex">
         ';
 
     // FOR EVERYONE
@@ -39,6 +39,7 @@
 
     echo '
             </nav>
+            </header>
     ';
 
 

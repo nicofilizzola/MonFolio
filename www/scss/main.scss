@@ -1,5 +1,9 @@
+@import "utils/variables";
 
-body{
-    background-color: rgb(233, 233, 133);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+@import "base/font";
+@import "base/setup";
+
+@import "components/buttons";
+
+@import "layouts/general";
+@import "layouts/header";
