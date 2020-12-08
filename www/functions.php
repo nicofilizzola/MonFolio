@@ -761,6 +761,8 @@
 					mysqli_stmt_close($stmt);
 					
 					if($result_check > 0){
+						echo'<div class="flex flex--column userlist">';
+
 						while($row = mysqli_fetch_assoc($result)){
 							$user_name = $row['user_names'];
 							$user_id = $row['user_id'];
@@ -768,12 +770,15 @@
 							$user_media = $row['user_pic_id'];
 
 							echo'
-								<div>
+								<div class="flex userlist__element">
 							';
 
 							if ($user_media == 0){
 								
-								echo '<img src="resources/media/img/default.jpg" class="profilepic">';
+								echo '
+									<div>
+										<img src="resources/media/img/default.jpg" class="profilepic">
+									</div>';
 
 							}else{
 
@@ -782,22 +787,29 @@
 								$media_path = mysqli_fetch_assoc($result2)['media_path'];
 								mysqli_close($conn);
 
-								echo '<img src="'.$media_path.'" class="profilepic">';
+								echo '
+									<div class="flex">
+										<img src="'.$media_path.'" class="profilepic">
+									</div>';
 
 							}
 							
 
 							echo'
-								<p>'.$user_name.'</p>
-								<p>'.$user_title.'</p>
-								<form method="get" action="index.php">
-									<button name="user_id" value="'.$user_id.'">Voir ses projets</button>
-								</form>
+								<div class="flex flex--col">
+									<p>'.$user_name.'</p>
+									<p>'.$user_title.'</p>
+									<form method="get" action="index.php">
+										<button name="user_id" value="'.$user_id.'">Voir ses projets</button>
+									</form>
+								</div>
 							</div>
 
 						';
 
 						}
+
+						echo '</div>';
 
 					// IF NO RESULT
 					} else {
@@ -858,7 +870,7 @@
 		$user_uid = $user_data['user_uid'];
 
 		echo '
-			<div class="flex userlist__element">
+			<div class="flex userinfo__element">
 				<div>
 					<img src="'.$media_path.'">';
 
@@ -895,10 +907,5 @@
 				</div>
 			</div>
 		';
-
-
 		}
-
-		
-
 	}
