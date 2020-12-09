@@ -1,10 +1,5 @@
 <?php
 	require('header.php');
-
-	if (isset($_SESSION['my_user_id'])){
-		echo 'my user id '.$_SESSION['my_user_id'];
-	}
-
 ?>
 
 	<section>
@@ -27,9 +22,19 @@
 
 		// functions.php
 		user_info();
-		home();
 
 	?>
+
+		<div class="project-grid">
+
+			<?php
+			
+				// functions.php
+				home();
+
+			?>
+
+		</div>
 
 	</section>
 

@@ -4,11 +4,18 @@
 
 ?>
 
+    <section class="flex flex--jc-c">
+
+        <?php
+
+            // USERS LIST - functions.php
+            users_list();
+
+        ?>
+
+    </section
 
 <?php
-
-    // USERS LIST - functions.php
-    users_list();
 
     require('footer.php');
 

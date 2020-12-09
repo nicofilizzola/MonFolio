@@ -1,9 +1,16 @@
 .userlist{
+    width: 90vw;
+    background-color: $color-secondary;
+    align-items: center;
+    padding: 1rem;
+    border-radius: $border-radius;
 
     &__element{
-
+        width: 100%;
+        height: auto;
         border: $border-stroke;
-        border-radius: .625rem;
+        border-radius: $border-radius;
+        background-color: $color-primary;
 
         img{
             border-radius: 50%;
@@ -13,9 +20,8 @@
         }
         
         div{
-
             margin: 1rem;
-
+            height: 100px;
         }
 
     }

@@ -7,3 +7,10 @@ cache-save project info when new project if error
 
 close all statements and mysqli connections
 
+check if user searched (category, type and tag)
+
+js : count characters till 1000 in textarea
+
+add instructions
+
+brightness hover when not own project

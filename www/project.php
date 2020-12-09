@@ -1,14 +1,5 @@
 <?php
-
 	require('header.php');
-
-
-	$_GET['user_id'] = $_SESSION['my_user_id'];
-
-	if (isset($_SESSION['my_user_id'])){
-		echo 'my user id '.$_SESSION['my_user_id'];
-	}
-
 ?>
 
     <section>
@@ -16,19 +7,20 @@
 		<?php
 
 			// FOR EVERYONE
-			filter_searchbar();
-
-		?>
-
-	</section>
-
-    <section>
-
-        <?php
-
-            show_project($_GET['project_id'], $cat);
+            filter_searchbar();
+            
 
         ?>
+
+        <div class="flex project">
+
+            <?php
+
+                show_project($_GET['project_id'], $cat);
+
+            ?>
+
+        <div>
 
     </section>
 
