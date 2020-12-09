@@ -16,14 +16,16 @@
 
 		?>
 
-	<section>
-		
+	</section>
+
 	<?php
 
 		// functions.php
 		user_info();
 
 	?>
+
+	<section>
 
 		<div class="project-grid">
 
