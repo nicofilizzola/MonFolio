@@ -1,0 +1,57 @@
+.project{    
+    margin: $margin-section;
+    
+    &__article{
+        max-width: 50vw;
+        min-width: 45vw;
+
+        .swiper-container{
+            width: 500px;
+            height: 500px;
+
+            img{
+                height: 450px;
+                width: auto;
+                object-fit: contain;
+            }
+        }
+
+        .span{
+            margin-top: 1rem;
+        }
+
+        span:not(.swiper-pagination-bullet){
+            padding: $border-radius;
+        }
+
+        .cat{
+            border-radius: $border-radius;
+            color: $color-primary;
+
+            //@each $key, $value in $color-cat{
+            //    .cat#{$key}{
+            //        background-color: $value;
+            //    }
+            //}
+
+            &1{
+                background-color: map-get($map: $color-cat, $key: 1);
+            }
+            &2{
+                background-color: map-get($map: $color-cat, $key: 2);
+            }
+            &3{
+                background-color: map-get($map: $color-cat, $key: 3);
+            }
+            &4{
+                background-color: map-get($map: $color-cat, $key: 4);
+            }
+        }
+
+        .tag{
+            border: $border-stroke;
+            border-radius: $border-radius;
+        }
+    }
+
+}

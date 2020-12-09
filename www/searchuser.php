@@ -2,19 +2,20 @@
 
 	require('header.php');
 
-	$_GET['user_id'] = $_SESSION['my_user_id'];
-
-	if (isset($_SESSION['my_user_id'])){
-		echo 'my user id '.$_SESSION['my_user_id'];
-	}
-
 ?>
 
+    <section class="flex flex--jc-c">
+
+        <?php
+
+            // USERS LIST - functions.php
+            users_list();
+
+        ?>
+
+    </section
 
 <?php
-
-    // USERS LIST - functions.php
-    users_list();
 
     require('footer.php');
 

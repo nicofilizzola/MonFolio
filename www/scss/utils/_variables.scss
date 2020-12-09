@@ -8,6 +8,17 @@ $color-accent: #44DE68;
 $color-light: #808080;
 $color-light2: #EFEFEF;
 
+$color-cat: (
+    1: rgb(226, 83, 0),
+    2: rgb(226, 17, 34),
+    3: rgb(85, 155, 28),
+    4: rgb(3, 54, 223),
+);
+
+$transparent: rgba(0,0,0,0);
+
+$color-del: map-get($map: $color-cat, $key: 2);
+$color-edit: map-get($map: $color-cat, $key: 3);
 
 /**********
 RESPONSIVE BREAKPOINTS
@@ -19,3 +30,16 @@ $breakpoints:(
     medium: 768px,
     small: 576px,
 );
+
+/***********
+BORDER
+**************/
+
+$border-stroke: 1px solid $color-light;
+$border-radius: 0.625rem;
+
+/*************
+MARGIN
+***********/
+
+$margin-section: 5rem auto;

@@ -1,0 +1,45 @@
+.project-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+
+    &__element{
+
+        button{
+            background-color: $color-primary;
+            border: none;
+        }
+
+        img{
+            height: 250px;
+            width: 300px;
+            object-fit: cover;
+        }
+
+        form{
+            margin: 0.5rem;
+        }
+    }
+}
+
+.imgBtn{
+    transition: 0.3s;
+    padding: 0;
+    height: 250px;
+}
+
+.imgBtn:hover{
+    filter: brightness(50%);
+}
+
+.delBtn{
+    color: $color-del;
+}
+
+.editBtn{
+    color: $color-edit;
+}
+
+.titleBtn{
+    font-weight: 600;
+}

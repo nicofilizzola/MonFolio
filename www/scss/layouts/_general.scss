@@ -5,12 +5,22 @@
     }
     &--center{
         align-items: center;
-        text-align: center;
+        justify-content: center;
+        &--textcenter{
+            text-align: center;
+        }
+    }
+
+    &--ai-c{
+        align-items: center;
+    }
+
+    &--jc-c{
         justify-content: center;
     }
 }
 
 .container{
-    max-width: 1720px;
-    margin: auto;
+    max-width: 1248px;
+    margin: $margin-section;
 }

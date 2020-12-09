@@ -73,8 +73,13 @@
 		 ********************************* */
 		
 		function display_by_creator($creator_id, $conn){
+			if (strpos($_SERVER['REQUEST_URI'], 'backoffice.php')){
+				$creator_id = $_SESSION['my_user_id'];
+			}
 			$sql = "SELECT * FROM project WHERE project.user_id = '$creator_id' ORDER BY project_id DESC";
+			
 
+			if (strpos($_SERVER['REQUEST_URI'], 'backoffice.php')){}
 			get_project_data_execute($sql, $conn, 1);
 			
 		}
@@ -103,8 +108,6 @@
 					$result_tag = mysqli_query($conn, $sql_tag);
 					$tags_array = mysqli_fetch_all($result_tag);
 					
-					
-
 					$sql_img = "SELECT media.media_path FROM media, project_media, project WHERE project.project_id = project_media.project_id AND project_media.media_id = media.media_id AND project.project_id = '$this_project' AND media.media_type = 1 LIMIT 1";
 					$result_img = mysqli_query($conn, $sql_img);
 					$media_cover = mysqli_fetch_assoc($result_img)['media_path'];
@@ -130,23 +133,33 @@
 					</div>
 				';
 			}elseif($error_code == 1){
-				echo '
-					<div>
-						<h2>Déso, mais cet utilisateur n\'a pas encore des projets à montrer :(</h2>
-					</div>
+				if (strpos($_SERVER['REQUEST_URI'], 'backoffice.php')){
+					echo '
+						<div>
+							<h2>Tu n\'as aucun projet à montrer, <a href="editor.php">crées en un</a></h2>
+						</div>
 				';
+				}else{
+					echo '
+						<div>
+							<h2>Déso, mais cet utilisateur n\'a pas encore des projets à montrer :(</h2>
+						</div>
+				';
+				}				
 			}	
 		}
 
 		// DISPLAY USER'S PROJECT
 		function display_default($project_name, $media_first, $project_id){
 			echo '
-				<div>
-					<h4>'.$project_name.'</h4>
-					<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+				<div class="project-grid__element">
+					
+					<button class="imgBtn">
+						<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+					</button>
 					<form method="get" action="project.php">
 						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button type="submit" name="project_go">Go !</button>
+						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button>
 					</form>
 				</div>';
 			}
@@ -154,21 +167,25 @@
 		// DISPLAY OWN PROJECT
 		function display_backoffice($project_name, $media_first, $project_id){
 			echo '
-				<div>
-					<h4>'.$project_name.'</h4>
-					<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+				<div class="project-grid__element">
 					<form method="get" action="project.php">
-						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button type="submit" name="project_go">Go !</button>
+						<button class="imgBtn" type="submit" name="project_id" value="'.$project_id.'">
+							<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+						</button>
 					</form>
-					<form method="get" action="editor.php">
-						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button type="submit" name="project-go_submit">Éditer</button>
-					</form>
-					<form method="get" action="include/editor.inc.php">
-						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button class="deleteBtnBO" type="submit" name="project-delete_submit">Supprimer</button>
-					</form>
+					<div class="flex">
+						<form method="get" action="project.php">
+							<button class="titleBtn" type="submit" name="project_id" value="'.$project_id.'">'.$project_name.'</button>
+						</form>
+						<form method="get" action="editor.php">
+							<input type="hidden" name="project_id" value="'.$project_id.'">
+							<button class="editBtn" type="submit" name="project-go_submit">Éditer</button>
+						</form>
+						<form method="get" action="include/editor.inc.php">
+							<input type="hidden" name="project_id" value="'.$project_id.'">
+							<button class="deleteBtnBO delBtn" type="submit" name="project-delete_submit">Supprimer</button>
+						</form>
+					</div>
 				</div>';
 
 		}
@@ -245,7 +262,7 @@
 			EXECUTE
 		 ********************************* */
 
-		if(isset($creator_id) && $creator_id != ""){
+		if(isset($creator_id) && $creator_id != "" || strpos($_SERVER['REQUEST_URI'], 'backoffice.php')){
 
 			display_by_creator($creator_id, $conn);
 
@@ -345,21 +362,20 @@
 		// IF NEW PROJECT
 		if ($project_data == 0){
 
-			echo 'new project';
-
 			echo '
 			<form action="include/editor.inc.php" method="POST" enctype="multipart/form-data">
 			
 				<input name="name" type="text" placeholder="Donne un titre à ton projet" required>
-				<textarea name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required></textarea>
+				<textarea onkeyup="charCount(this.value)" id="projectDescription" maxlength="1000" name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required></textarea>
+				<span id="characterCount"></span>
 				<input name="link" type="text" placeholder="T\'as un lien vers ce projet ? Donne le nous ici" required>
 
 				<select name="cat">
 					<option value="">Catégorie</option>
-					<option value="1">Graphisme</option>
-					<option value="2">Audiovisuel</option>
-					<option value="3">Web Design</option>
-					<option value="4">Développement</option>
+					<option value="1">'.$cat[1].'</option>
+					<option value="2">'.$cat[2].'</option>
+					<option value="3">'.$cat[3].'</option>
+					<option value="4">'.$cat[4].'</option>
 				</select>
 				
 				<input type="radio" name="type" value="1">
@@ -397,13 +413,12 @@
 		// IF EDIT EXISTING PROJECT
 		} else {
 
-			echo 'edit project';
-
 			echo '
 			<form action="include/editor.inc.php" method="POST">
 			
 				<input value="'.$project_data[1].'" name="name" type="text" placeholder="Donne un titre à ton projet" required>
-				<textarea name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required>'.$project_data[2].'</textarea>
+				<textarea onkeyup="charCount(this.value)" id="projectDescription" maxlength="1000" name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required>'.$project_data[2].'</textarea>
+				<span id="characterCount"></span>
 				<input value="'.$project_data[3].'" name="link" type="text" placeholder="T\'as un lien vers ce projet ? Donne le nous ici" required>
 
 				<select value="'.$project_data[4].'" name="cat">
@@ -567,7 +582,6 @@
 
 							});
 						});
-
 					</script>
 
 					<input type="file" name="media">
@@ -581,7 +595,7 @@
 
 		}	
 
-		// CHECKBOX LIMIT
+		// CHECKBOX LIMIT AND CHARACTER COUNTER
 		echo '
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script>
@@ -589,6 +603,13 @@
 			var bol = $("input:checkbox:checked").length >= 3;     
 			$("input:checkbox").not(":checked").attr("disabled",bol);
 			});
+		</script>
+
+		<script>
+			function charCount(str) {
+				var lng = str.length;
+				document.getElementById("characterCount").innerHTML = lng + "/1000";
+			}
 		</script>
 		';
 
@@ -624,7 +645,7 @@
 			$result3 = mysqli_query($conn, $sql3);
 
 			echo '
-			<article>
+			<article class="flex project__article">
 				<div class="swiper-container">
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">';
@@ -665,29 +686,29 @@
 			</article>';
 
 			echo '
-			<article>
+			<article class="flex flex--col project__article">
 
 				<h3>'.$project_data['project_name'].'</h3>
 
 				<p>'.$project_data['project_txt'].'</p>
 
-				<a href="'.$project_data['project_link'].'" target="_blank">Clique ici pour en savoir plus</a>
+				<p class="span"><a href="'.$project_data['project_link'].'" target="_blank">Clique ici pour en savoir plus</a></p>
 
-				<p><span class="cat">'.$cat[$cat_index].'</span></p>';
+				<p class="span"><span class="cat cat'.$cat_index.'">'.$cat[$cat_index].'</span></p>';
 
 			// IF SOLO PROJECT
 			if ($project_data['type_id'] == 1){
 
-				echo '<p><span class="type">Projet solo</span></p>';
+				echo '<p class="span"><span class="type">Projet solo</span></p>';
 
 			// IF TEAM PROJECT
 			} elseif ($project_data['type_id'] == 2){
 
-				echo '<p><span class="type">Projet en équipe</span></p>';
+				echo '<p class="span"><span class="type">Projet en équipe</span></p>';
 
 			}
 
-			echo '<p>';
+			echo '<p class="span">';
 
 			while ($row3 = mysqli_fetch_assoc($result3)){
 
@@ -761,6 +782,8 @@
 					mysqli_stmt_close($stmt);
 					
 					if($result_check > 0){
+						echo'<div class="flex flex--col userlist">';
+
 						while($row = mysqli_fetch_assoc($result)){
 							$user_name = $row['user_names'];
 							$user_id = $row['user_id'];
@@ -768,12 +791,15 @@
 							$user_media = $row['user_pic_id'];
 
 							echo'
-								<div>
+								<div class="flex userlist__element">
 							';
 
 							if ($user_media == 0){
 								
-								echo '<img src="resources/media/img/default.jpg" class="profilepic">';
+								echo '
+									<div>
+										<img src="resources/media/img/default.jpg" class="profilepic">
+									</div>';
 
 							}else{
 
@@ -782,22 +808,29 @@
 								$media_path = mysqli_fetch_assoc($result2)['media_path'];
 								mysqli_close($conn);
 
-								echo '<img src="'.$media_path.'" class="profilepic">';
+								echo '
+									<div class="flex">
+										<img src="'.$media_path.'" class="profilepic">
+									</div>';
 
 							}
 							
 
 							echo'
-								<p>'.$user_name.'</p>
-								<p>'.$user_title.'</p>
-								<form method="get" action="index.php">
-									<button name="user_id" value="'.$user_id.'">Voir ses projets</button>
-								</form>
+								<div class="flex flex--col">
+									<p>'.$user_name.'</p>
+									<p>'.$user_title.'</p>
+									<form method="get" action="index.php">
+										<button name="user_id" value="'.$user_id.'">Voir ses projets</button>
+									</form>
+								</div>
 							</div>
 
 						';
 
 						}
+
+						echo '</div>';
 
 					// IF NO RESULT
 					} else {
@@ -858,7 +891,7 @@
 		$user_uid = $user_data['user_uid'];
 
 		echo '
-			<div class="flex userlist__element">
+			<div class="flex userinfo__element">
 				<div>
 					<img src="'.$media_path.'">';
 
@@ -895,10 +928,5 @@
 				</div>
 			</div>
 		';
-
-
 		}
-
-		
-
 	}
