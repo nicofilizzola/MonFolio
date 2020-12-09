@@ -221,7 +221,7 @@
             echo '
                         <input type="password" name="pwd" placeholder="Mot de passe" required>
                         <input type="password" name="pwd_ver" placeholder="Vérifiez votre mot de passe" required>
-                        <button type="submit" name="signup_submit">Commencer</button>
+                            <button type="submit" name="signup_submit">Commencer</button>
                     </form>
                 </article>
             ';
@@ -231,13 +231,13 @@
         function cta_band(){
             
             echo'
-                <article>
+                <section class="sectionCTA">
                     <h1>Partagez vos projets créatifs</h1>
 
                     <form action="">
                         <button>Commencer</button>
                     </form>
-                </article>
+                </section>
             ';
 
         }
