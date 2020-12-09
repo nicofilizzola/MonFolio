@@ -5,14 +5,15 @@ COLORS
 $color-primary: #fff;
 $color-secondary: #000;
 $color-accent: #44DE68;
-$color-light: #AAAAAA;
+$color-light: #808080;
+$color-light2: #EFEFEF;
 
 
 /**********
 RESPONSIVE BREAKPOINTS
 **********/
 
-$breakpoints: (
+$breakpoints:(
     extra-large: 1200px,
     large: 992px,
     medium: 768px,

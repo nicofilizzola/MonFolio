@@ -13,9 +13,9 @@
 		);
 
         echo'
-            <article>
-                <div>
-                    <h2>Projets à découvrir</h2>
+            <section class="container">
+                <div class="homeBar flex">
+                    <h3>Projets à découvrir</h3>
                     <form action="index.php" method="get">
                         <select name="cat">
                             <option value="">Catégories</option>
@@ -50,18 +50,19 @@
                             
         echo'
                         </select>
-                        <button type="submit">Rechercher</button>
-                    </form>	
+                        <button type="submit" class="btn btn--secondary">Rechercher</button>
+                    </form>
                 </div>
-            </article>
+            </section>
         ';
     }
 
     function user_searchbar(){
         echo '
-            <form action="searchuser.php" method="get">
+            <form action="searchuser.php" method="get" class="flex flex--center">
+                <button name="user-search_submit"></button>
                 <input type="text" name="user" placeholder="Rechercher un utilisateur">
-                <button name="user-search_submit">Rechercher</button>
+                
             </form>
         ';
     }
@@ -129,7 +130,7 @@
 
         function sign_btns(){
             echo'
-                <button class="btn btn--white">Se connecter</button>
+                <button class="btn btn--primary">Se connecter</button>
                 <button class="btn btn--accent">Rejoindre</button>  
             ';
         }
@@ -229,13 +230,13 @@
         }
 
         function cta_band(){
-            
+
             echo'
-                <section class="sectionCTA">
+                <section class="sectionCTA flex flex--col flex--center">
                     <h1>Partagez vos projets créatifs</h1>
 
                     <form action="">
-                        <button>Commencer</button>
+                        <button class="btn btn--accent">Commencer</button>
                     </form>
                 </section>
             ';

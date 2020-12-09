@@ -1,0 +1,18 @@
+.sectionCTA{
+    background-image: url("../../resources/img/sectionCTA.jpg");
+    background-size: cover;
+    background-position: 20% 0%;
+    height: 20rem;
+    >h1{
+        font-size: 2.441rem;
+        color: $color-primary;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+}
+
+.homeBar{
+    justify-content: space-between;
+    align-items: center;
+    margin: 3.56rem 0 2.125rem 0;
+}
