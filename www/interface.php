@@ -133,7 +133,7 @@
 
         echo'
                     </select>
-                    <button type="submit" class="btn btn--secondary flex ">Rechercher<img src="resources/img/icons/icon-search-white.svg">
+                    <button type="submit" class="btn btn--secondary flex ">Rechercher<img src="resources/media/img/ico/icon-search-white.svg">
                     </button>
                 </form>
             </div>
@@ -158,7 +158,8 @@
         function signout_btn(){
             echo '
                 <form action="include/signout.inc.php" method="POST">
-                    <button type="submit" name="signout_submit">Se déconnecter</button>
+                    <button type="submit" name="signout_submit" class="btn btn--secondary flex">Déconnexion<img src="resources/media/img/ico/icon-logout.svg">
+                    </button>
                 </form>
             ';
         }
@@ -221,7 +222,7 @@
                 <section class="sign-form__container__wrapper sign-form__container__wrapper--hidden flex flex--col flex--center" id="signInWrap">
                     <div class="sign-form__container">
                         <button class="close_button "id="closeSignIn" onclick="toggleSignIn()">
-                            <img src="resources/img/times-solid.svg">
+                            <img src="resources/media/img/times-solid.svg">
                         </button>
                         <h2>Connecte-toi</h2>
                         <form class="sign-form flex flex--coxl" action="include/signin.inc.php" method="POST">';
@@ -257,7 +258,7 @@
                 <section class="sign-form__container__wrapper sign-form__container__wrapper--hidden flex flex--col flex--center" id="signUpWrap">
                     <div class="sign-form__container">
                         <button class="close_button "id="closeSignUp" onclick="toggleSignUp()">
-                            <img src="resources/img/times-solid.svg">
+                            <img src="resources/media/img/times-solid.svg">
                         </button>
                         <h2>Inscris-toi</h2>
                         <form class="sign-form flex flex--col" action="include/signup.inc.php" method="POST">';

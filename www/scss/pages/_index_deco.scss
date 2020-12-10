@@ -1,5 +1,5 @@
 .sectionCTA{
-    background-image: url("../../resources/img/sectionCTA.jpg");
+    background-image: url("../../resources/media/img/sectionCTA.jpg");
     background-size: cover;
     background-position: 20% 0%;
     height: 20rem;
@@ -18,6 +18,12 @@
     >form{
         select{
             margin-left: 1rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: $color-light2;
+            padding: 0.6rem 1.1rem;
+            border-radius: 0.3rem;
         }
         button{
             justify-content: space-between;

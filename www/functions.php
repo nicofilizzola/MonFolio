@@ -167,7 +167,7 @@
 					</button>
 					<form method="get" action="project.php">
 						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button> | '.$cat[$project_cat].'
+						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button><span class="text_small"> | '.$cat[$project_cat].'</span>
 					</form>
 				</div>';
 			}

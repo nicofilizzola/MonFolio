@@ -18,17 +18,17 @@
         }
 
         form{
-             /* margin: 0.5rem; */
-             .titleBtn{
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 60%;
-                font-size: .875rem;
-             }
-             label{
-                 color: $color-light;
-             }
+            /* margin: 0.5rem; */
+            .titleBtn{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+            font-size: .875rem;
+            }
+            .text_small{
+                color: $color-light;
+            }
         } 
     }
 }
