@@ -114,9 +114,7 @@
         if(isset($_GET['tag'])){
             for ($i = 0; $i < count($tag); $i++){
                 if ($i == $_GET['tag'] || $i == 0){
-                    if ($i == 0){
-                        echo '<option value="">Tag</option>';
-                    } else {
+                    if ($i != 0) {
                         echo '<option value="'.$i.'" selected="selected">'.$tag[$i].'</option>';
                     }                    
                 } else {
@@ -124,7 +122,7 @@
                 }
             }
         } else {
-            for($i = 0; $i < count($tag); $i++){
+            for($i = 1; $i < count($tag); $i++){
                 echo'
                 <option value="'.$i.'">'.$tag[$i].'</option>
                 ';
@@ -180,9 +178,20 @@
         }
 
         function bo_btn(){
+            require('include/conn.inc.php');
+            $user_id = $_SESSION['my_user_id'];
+            $sql = "SELECT media_path FROM media, user WHERE user.user_id = '$user_id' AND user.user_pic_id = media.media_id";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0){
+                $media = mysqli_fetch_assoc($result)['media_path'];
+            }else{
+                $media = 'resources/media/img/default.jpg';
+            }
             echo '
                 <form action="backoffice.php">
-                    <button type="submit" name="backoffice_submit" method="POST">Mes projets</button>
+                    <button class="btn--none" type="submit" name="backoffice_submit" method="POST">
+                        <img src="'.$media.'" class="header__profilepic">
+                    </button>
                 </form>
             ';
         }
@@ -194,7 +203,9 @@
             echo '
                 <div>
                     <form action="editor.php" method="get">
-                        <button type="submit" name="new-project_submit">Nouveau projet</button>	
+                        <button id="btnPlus" class="btn--none" type="submit" name="new-project_submit">
+                            <img src="resources/media/ico/plus-solid.svg">
+                        </button>	
                     </form>
                 </div>
             ';

@@ -2,14 +2,16 @@
 	require('header.php');
 ?>
 
-    <section>
+    <section class="flex flex--col">
+
+	<?php
+	// USER'S DETAILS - functions.php
+	user_info();
+	?>
 
 	<div class="project-grid">
 
 			<?php
-
-				// USER'S DETAILS - functions.php
-				user_info();
 
 				// NEW PROJECT BUTTON - interface.php
 				np_btn();
