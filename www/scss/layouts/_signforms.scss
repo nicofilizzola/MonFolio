@@ -28,13 +28,12 @@
             position: fixed;
             z-index: 3;
             background-color: none;
+            top: 0;
             
             &--hidden{
                 top: 100vh;
             }
-
         }
-
     }
 
     input, button {

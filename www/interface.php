@@ -30,11 +30,10 @@
         mysqli_close($conn);
 
         echo'
-            <article>
-                <div>
-                    <h2>Projets à découvrir</h2>
-                    <form action="index.php" method="get">
-                        <select name="cat">';
+            <div class="homeBar flex">
+                <h3>Projets à découvrir</h3>
+                <form action="index.php" method="get">
+                    <select name="cat">';
 
         if (isset($_GET['cat'])){
 
@@ -133,19 +132,19 @@
         } 
 
         echo'
-                        </select>
-                        <button type="submit">Rechercher</button>
-                    </form>	
-                </div>
-            </article>
+                    </select>
+                    <button type="submit" class="btn btn--secondary">Rechercher</button>
+                </form>
+            </div>
         ';
     }
 
     function user_searchbar(){
         echo '
-            <form action="searchuser.php" method="get">
+            <form action="searchuser.php" method="get" class="flex flex--center">
+                <button name="user-search_submit"></button>
                 <input type="text" name="user" placeholder="Rechercher un utilisateur">
-                <button name="user-search_submit">Rechercher</button>
+                
             </form>
         ';
     }
@@ -211,7 +210,7 @@
 
         function sign_btns(){
             echo'
-                <button class="btn btn--white" onclick="toggleSignIn()">Se connecter</button>
+                <button class="btn btn--primary" onclick="toggleSignIn()">Se connecter</button>
                 <button class="btn btn--accent" onclick="toggleSignUp()">Rejoindre</button>  
             ';
         }
@@ -325,12 +324,12 @@
         }
 
         function cta_band(){
-            
+
             echo'
-                <article>
+                <div class="sectionCTA flex flex--col flex--center">
                     <h1>Partagez vos projets créatifs</h1>
-                    <button onclick="toggleSignUp()">Commencer</button>
-                </article>
+                    <button onclick="toggleSignUp()" class="btn btn--accent">Commencer</button>
+                </div>
             ';
 
         }

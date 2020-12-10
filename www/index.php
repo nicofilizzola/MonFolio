@@ -2,22 +2,19 @@
 	require('header.php');
 ?>
 
-	<section>
+	<?php
 
-		<?php
+		// FOR VISITOR - interface.php
+		cta_band();
+		signin_form();
+		signup_form();
 
-			// FOR VISITOR - interface.php
-			cta_band();
-			signin_form();
-			signup_form();
+		// FOR EVERYONE
+		
 
-			// FOR EVERYONE
-			filter_searchbar();
+	?>
 
-		?>
-
-	</section>
-
+		
 	<?php
 
 		// functions.php
@@ -25,14 +22,18 @@
 
 	?>
 
-	<section>
+	<section class="container">
 
+		<?php
+			filter_searchbar();
+		?>
+		
 		<div class="project-grid">
 
 			<?php
 			
 				// functions.php
-				home();
+				home($cat);
 
 			?>
 

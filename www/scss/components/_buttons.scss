@@ -8,14 +8,20 @@ button{
     padding: 0.6rem 1.1rem;
     border-radius: 0.3rem;
     font-weight: 600;
+    font-size: .875rem;
     border: none;
     
     &--accent{
         background-color: $color-accent;
     }
-    &--white{
+    &--primary{
         background-color: $color-primary;
         color: $color-light;
     }
+    &--secondary{
+        background-color: $color-secondary;
+        color: $color-primary;
+    }
+
 }
 

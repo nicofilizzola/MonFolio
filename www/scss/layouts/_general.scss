@@ -1,13 +1,14 @@
 .flex{
     display: flex;
-
     &--col{
         flex-direction: column;
     }
-
     &--center{
         align-items: center;
         justify-content: center;
+        &--textcenter{
+            text-align: center;
+        }
     }
 
     &--ai-c{
@@ -17,5 +18,9 @@
     &--jc-c{
         justify-content: center;
     }
+}
 
+.container{
+    max-width: 1248px;
+    margin: $margin-section;
 }

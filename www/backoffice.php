@@ -15,7 +15,7 @@
 				np_btn();
 
 				// PROJECTS DISPLAY - functions.php
-				home();
+				home($cat);
 
 			?>
 		

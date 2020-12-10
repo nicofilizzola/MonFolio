@@ -20,7 +20,7 @@
         </head>
 
         <body>
-            <header class="flex flex-jc-sb flex-ai-c">
+            <header class="flex">
             <a href="index.php">
                 <img src="resources/img/logo.png" alt="logo" class="header__logo">
             </a>

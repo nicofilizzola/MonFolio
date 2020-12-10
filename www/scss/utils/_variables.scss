@@ -5,7 +5,8 @@ COLORS
 $color-primary: #fff;
 $color-secondary: #000;
 $color-accent: #44DE68;
-$color-light: #AAAAAA;
+$color-light: #808080;
+$color-light2: #EFEFEF;
 
 $color-cat: (
     1: rgb(226, 83, 0),
@@ -23,7 +24,7 @@ $color-edit: map-get($map: $color-cat, $key: 3);
 RESPONSIVE BREAKPOINTS
 **********/
 
-$breakpoints: (
+$breakpoints:(
     extra-large: 1200px,
     large: 992px,
     medium: 768px,
@@ -41,4 +42,4 @@ $border-radius: 0.625rem;
 MARGIN
 ***********/
 
-$margin-section: 5rem;
+$margin-section: 5rem auto;
