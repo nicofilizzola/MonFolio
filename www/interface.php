@@ -32,7 +32,7 @@
         echo'
             <div class="homeBar flex">
                 <h3>Projets à découvrir</h3>
-                <form action="index.php" method="get">
+                <form action="index.php" method="get" class="flex flex--center">
                     <select name="cat">';
 
         if (isset($_GET['cat'])){
@@ -133,7 +133,8 @@
 
         echo'
                     </select>
-                    <button type="submit" class="btn btn--secondary">Rechercher</button>
+                    <button type="submit" class="btn btn--secondary flex ">Rechercher<img src="resources/img/icons/icon-search-white.svg">
+                    </button>
                 </form>
             </div>
         ';
@@ -223,7 +224,7 @@
                             <img src="resources/img/times-solid.svg">
                         </button>
                         <h2>Connecte-toi</h2>
-                        <form class="sign-form flex flex--col" action="include/signin.inc.php" method="POST">';
+                        <form class="sign-form flex flex--coxl" action="include/signin.inc.php" method="POST">';
 
             if (isset($_GET['email'])){
 

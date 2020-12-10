@@ -14,5 +14,19 @@
 .homeBar{
     justify-content: space-between;
     align-items: center;
-    margin: 3.56rem 0 2.125rem 0;
+    margin-bottom: 2.125rem;
+    >form{
+        select{
+            margin-left: 1rem;
+        }
+        button{
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 1rem;
+            img{
+                max-width: 1rem;
+                margin: 0 .8rem 0 .8rem;
+            }
+        }
+    }
 }

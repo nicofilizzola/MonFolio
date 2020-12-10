@@ -160,6 +160,7 @@
 					<form method="get" action="project.php">
 						<input type="hidden" name="project_id" value="'.$project_id.'">
 						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button>
+						<label class="text_small"> | Graphisme</label>
 					</form>
 				</div>';
 			}

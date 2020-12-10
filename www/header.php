@@ -20,6 +20,7 @@
         </head>
 
         <body>
+            <div id="popup__overlay"></div>
             <header class="flex">
             <a href="index.php">
                 <img src="resources/img/logo.png" alt="logo" class="header__logo">

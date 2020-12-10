@@ -1,5 +1,8 @@
 .sign-form{
     width: 50vw;
+    box-shadow:
+    0  5px 10px rgba(154,160,185,0.05),
+    0 15px 40px rgba(166,173,201,0.2);
 
     &__container{
         width: auto;
@@ -28,7 +31,7 @@
             position: fixed;
             z-index: 3;
             background-color: none;
-            
+            top: 0;
             &--hidden{
                 top: 100vh;
             }
