@@ -33,7 +33,7 @@
 			<?php
 			
 				// functions.php
-				home();
+				home($cat);
 
 			?>
 

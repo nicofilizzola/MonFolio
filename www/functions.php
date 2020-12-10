@@ -150,7 +150,15 @@
 		}
 
 		// DISPLAY USER'S PROJECT
-		function display_default($project_name, $media_first, $project_id){
+		function display_default($project_name, $media_first, $project_id, $project_cat){
+			$cat = array(
+				'',
+				'Graphisme',
+				'Audiovisuel',
+				'Web Design',
+				'Développement'
+			);
+		
 			echo '
 				<div class="project-grid__element">
 					
@@ -159,8 +167,7 @@
 					</button>
 					<form method="get" action="project.php">
 						<input type="hidden" name="project_id" value="'.$project_id.'">
-						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button>
-						<label class="text_small"> | Graphisme</label>
+						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button> | '.$cat[$project_cat].'
 					</form>
 				</div>';
 			}
@@ -192,7 +199,7 @@
 		}
 
 		// DECIDE WHICH FROM THE LAST DISPLAY FUNCTIONS TO USE
-		function decide_display($creator_id, $project_name, $media_first, $project_id){
+		function decide_display($creator_id, $project_name, $media_first, $project_id, $project_cat){
 
 			// IF USER IS CONNECTED
 			if(isset($_SESSION['my_user_id'])){
@@ -205,14 +212,14 @@
 				// IF IT IS NOT
 				} else {
 
-					display_default($project_name, $media_first, $project_id);
+					display_default($project_name, $media_first, $project_id, $project_cat);
 
 				}
 
 			// IF USER IS NOT CONNECTED
 			} else {
 
-				display_default($project_name, $media_first, $project_id);
+				display_default($project_name, $media_first, $project_id, $project_cat);
 
 			}
 		}
@@ -234,7 +241,7 @@
 					if($_GET['tag'] == ""){
 
 						// DISPLAY PROJECT BOX
-						decide_display($creator_id, $project_name, $media_first, $project_id);
+						decide_display($creator_id, $project_name, $media_first, $project_id,$project_cat);
 
 					// IF TAG SELECTED
 					} elseif ($tags_array !== NULL) {
@@ -246,7 +253,7 @@
 							if($tags_array[$counter][0] == $_GET['tag']){
 
 								// DISPLAY PROJECT BOX
-								decide_display($creator_id, $project_name, $media_first, $project_id);
+								decide_display($creator_id, $project_name, $media_first, $project_id, $project_cat);
 
 							}
 						}
@@ -433,7 +440,7 @@
 						';
 				}else{
 					echo'
-						<option value="'.$i.'" selected="selected">'.$cat[$i].'</option>
+						<option value="'.$i.'">'.$cat[$i].'</option>
 						';
 				}
 			}
