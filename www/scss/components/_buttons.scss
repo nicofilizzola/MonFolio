@@ -27,5 +27,21 @@ button{
         filter: brightness(80%);
     }
 
+    &--none{
+        border: none;
+        background-color: $transparent;
+
+        img{
+            width: 50px;
+        }
+    }
+
 }
+
+#btnPlus{
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+}
+
 

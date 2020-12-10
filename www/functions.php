@@ -161,11 +161,10 @@
 		
 			echo '
 				<div class="project-grid__element">
-					
-					<button class="imgBtn">
-						<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
-					</button>
 					<form method="get" action="project.php">
+						<button class="imgBtn">
+							<img src="'.$media_first.'" alt="Photo du projet : '.$project_name.'">
+						</button>
 						<input type="hidden" name="project_id" value="'.$project_id.'">
 						<button class="titleBtn" type="submit" name="project_go">'.$project_name.'</button><span class="text_small"> | '.$cat[$project_cat].'</span>
 					</form>
@@ -901,7 +900,7 @@
 		echo '
 			<div class="flex userinfo__element">
 				<div>
-					<img src="'.$media_path.'">';
+					<img class="profilepic__bo" src="'.$media_path.'">';
 
 		
 		if (isset($_SESSION['my_user_id']) && $_SESSION['my_user_id'] == $user_id){
