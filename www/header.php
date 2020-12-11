@@ -25,7 +25,7 @@
             <a href="index.php">
                 <img src="resources/media/img/logo.png" alt="logo" class="header__logo">
             </a>
-            <nav class="flex">
+            <nav class="flex flex--center">
         ';
 
     // FOR EVERYONE

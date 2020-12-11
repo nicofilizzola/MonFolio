@@ -370,7 +370,7 @@
 		if ($project_data == 0){
 
 			echo '
-			<form action="include/editor.inc.php" method="POST" enctype="multipart/form-data">
+			<form class="flex flex--col flex--ai-c editor-form" action="include/editor.inc.php" method="POST" enctype="multipart/form-data">
 			
 				<input name="name" type="text" placeholder="Donne un titre à ton projet" required>
 				<textarea onkeyup="charCount(this.value)" id="projectDescription" maxlength="1000" name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required></textarea>
@@ -385,10 +385,14 @@
 					<option value="4">'.$cat[4].'</option>
 				</select>
 				
+				<div class="flex">
 				<input type="radio" name="type" value="1">
 					<label for="1">Solo</label>
 				<input type="radio" name="type" value="2">
-					<label for="2">En équipe</label>';
+					<label for="2">En équipe</label>
+				</div>
+				<div class="flex">';
+
 
 				require('include/conn.inc.php');
 				$sql = "SELECT * FROM tag";
@@ -408,11 +412,12 @@
 				}
 
 			echo '
+				</div>
 				<input type="file" name="media">
 				<input type="url" name="video" placeholder="Lien YouTube" disabled>
 				<p>Vu que ton projet n\'a pas encore été créé, tu ne peux pas ajouter un lien YouTube. Ajoute plutôt une image de couverture et reviens après avoir enregistré ton nouveau projet pour ajouter le lien de la vidéo ;)</p>
 				
-				<button type="submit" name="new-project_submit">Enregistrer</button>
+				<button type="submit" class="btn btn--accent" name="new-project_submit">Enregistrer</button>
 
 			</form>
 		';
@@ -421,7 +426,7 @@
 		} else {
 
 			echo '
-			<form action="include/editor.inc.php" method="POST">
+			<form class="flex flex--col flex--ai-c editor-form"  action="include/editor.inc.php" method="POST">
 			
 				<input value="'.$project_data[1].'" name="name" type="text" placeholder="Donne un titre à ton projet" required>
 				<textarea onkeyup="charCount(this.value)" id="projectDescription" maxlength="1000" name="txt" placeholder="Décris-nous ton projet. Qu\'est-ce que t\'a poussé à le faire ? Comment tu l\'as réalisé ? Ça t\'a apporté quoi ?" cols="30" rows="10" required>'.$project_data[2].'</textarea>
@@ -444,7 +449,8 @@
 				}
 			}
 
-			echo'</select>';
+			echo'</select>
+			<div class="flex"';
 
 			// IF SOLO PROJECT
 			if($project_data[5] == 1){
@@ -465,6 +471,8 @@
 					<label for="2">En équipe</label>';
 
 			}
+
+			echo'</div><div class="flex"';
 
 			// GET ALL TAGS
 			require('include/conn.inc.php');
@@ -497,8 +505,8 @@
 			}
 
 			echo '
-				
-				<button type="submit" name="edit-project_submit" value="'.$project_data[0].'">Enregistrer</button>
+				</div>
+				<button class="btn btn--accent" type="submit" name="edit-project_submit" value="'.$project_data[0].'">Enregistrer</button>
 
 			</form>
 			
@@ -898,6 +906,7 @@
 		$user_uid = $user_data['user_uid'];
 
 		echo '
+			<img src="resources/media/img/banner.jpg" class="banner">
 			<div class="flex userinfo__element">
 				<div>
 					<img class="profilepic__bo" src="'.$media_path.'">';
@@ -908,16 +917,16 @@
 			echo'
 				<form action="include/profilepic.inc.php" method="post" enctype="multipart/form-data">
 					<input type="file" name="pic" required>
-					<button type="submit" name="pic_submit">Enregistrer nouvelle photo de profil</button>
+					<button type="submit" class="btn btn--accent" name="pic_submit">Enregistrer nouvelle photo de profil</button>
 				</form>
 
 				</div>
-				<div>
+				<div class="userinfo__element__txt">
 					<form action="include/updateprofile.inc.php" method="post">
 						<input type="text" value="'.$user_names.'" name="user_name" placeholder="Ton nom" required>
 						<input type="text" value="'.$user_title.'" name="user_title" placeholder="Tu fais quoi ? (Développeur, Graphiste, ...)">
 						<textarea name="user_txt" placeholder="Dis-nous ton histoire">'.$user_txt.'</textarea>
-						<button type="submit" name="updateprofile_submit">Enregistrer</button>
+						<button type="submit" class="btn btn--accent" name="updateprofile_submit">Enregistrer</button>
 					</form>
 				</div>
 			</div>
@@ -927,7 +936,7 @@
 
 			echo'
 				</div>
-				<div>
+				<div class="userinfo__element__txt">
 					<h2>'.$user_names.'</h2>
 					<h4>'.$user_title.'</h4>
 					<p>@'.$user_uid.'</p>
@@ -935,5 +944,72 @@
 				</div>
 			</div>
 		';
+		}
+	}
+
+
+	/**********
+	Error msg
+	*********/
+	function errormsg(){
+		if (isset($_GET['error'])){
+			$error = $_GET['error'];
+			if ($error == 'searchuser_1'){
+				echo "Réesaie sans utiliser de caractères spéciaux.";
+			}elseif($error == 'signin_0'){
+				echo "Tu n'as pas rempli tous les champs d'entrée.";
+			}elseif($error == 'signin_1'){
+				echo "Cet identifiant n'existe pas dans le système. Créez un compte plutôt.";
+			}elseif($error == 'signin_2'){
+				echo "Ton mot de passe est érroné.";
+			}elseif($error == 'signup_0'){
+				echo "Tu n'as pas rempli tous les champs d'entrée.";
+			}elseif($error == 'signup_1'){
+				echo "Réésaie sans utiliser de caractères spéciaux pour ton prénom.";
+			}elseif($error == 'signup_2'){
+				echo "Réésaie sans utiliser de caractères spéciaux pour ton nom de famille.";
+			}elseif($error == 'signup_3'){
+				echo "Réésaie sans utiliser de caractères spéciaux pour ton nom d\'utilisateur.";
+			}elseif($error == 'signup_4'){
+				echo "Cette adresse email n'est pas valide.";
+			}elseif($error == 'signup_5'){
+				echo "Les deux mots de passe ne correspondent pas.";
+			}elseif($error == 'signup_6'){
+				echo "Ce nom d'utilisateur est déjà pris.";
+			}elseif($error == 'signup_7'){
+				echo "Cette adresse email est déjà prise.";
+			}elseif($error == 'newpic_0'){
+				echo "La taille de l'image dépasse 20Mo.";
+			}elseif($error == 'newpic_1'){
+				echo "Il y a un erreur avec ton fichier.";
+			}elseif($error == 'newpic_2'){
+				echo "Ce format d'image est invalide. Réssaie avec un JPG, JPEG ou PNG";
+			}elseif($error == 'new-media_3'){
+				echo "La taille de l'image dépasse 20Mo.";
+			}elseif($error == 'new-media_2'){
+				echo "Il y a un erreur avec ton fichier.";
+			}elseif($error == 'new-media_1'){
+				echo "Ce format d'image est invalide. Réssaie avec un JPG, JPEG, PNG ou PDF";
+			}elseif($error == 'new-media_4'){
+				echo "Ce lien est invalide.";
+			}elseif($error == 'newmedia_0'){
+				echo "Tun'as pas ajouté de média.";
+			}elseif($error == 'edit_0'){
+				echo "Tu n'as pas rempli tous les champs d'entrée.";
+			}elseif($error == 'new_0'){
+				echo "Tu n'as pas rempli tous les champs d'entrée.";
+			}elseif($error == 'new_4'){
+				echo "Tu n'as pas ajouté un média.";
+			}elseif($error == 'new_5'){
+				echo "T'as essayé de tricher en mettant deux médias, petit fou. Tu n'arriveras pas à nous hacker ;)";
+			}elseif($error == 'new_6'){
+				echo "Le lien n'est pas valide.";
+			}elseif($error == 'new_3'){
+				echo "La taille de ton image dépasse les 20 Mo.";
+			}elseif($error == 'new_2'){
+				echo "Il y a un erreur avec ton fichier.";
+			}elseif($error == 'new_1'){
+				echo "Ce format d'image est invalide. Réssaie avec un JPG, JPEG, PNG ou PDF.";
+			}
 		}
 	}

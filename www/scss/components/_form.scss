@@ -1,11 +1,27 @@
-input{
+input, textarea{
     color: $color-light;
     padding: 0.6rem 1.1rem;
     border-radius: 0.3rem;
     font-size: .875rem;
     border: none;
     background-color: $color-light2;
+    resize: none;
     &::placeholder{
         background-color: $color-light2;
     }   
+}
+
+textarea{
+    height: 5rem;
+    width: 12rem;
+}
+
+select{
+    margin-left: 1rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: $color-light2;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.3rem;
 }
