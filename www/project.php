@@ -4,14 +4,6 @@
 
     <section>
 
-		<?php
-
-			// FOR EVERYONE
-            filter_searchbar();
-            
-
-        ?>
-
         <div class="flex project">
 
             <?php

@@ -2,7 +2,13 @@
 	require('header.php');
 ?>
 
-    <section class="flex flex--col">
+	<span class="errormsg">
+		<?php
+			errormsg(); // functions.php
+		?>
+	</span>
+
+    <section class="flex flex--col flex--ai-c">
 
 	<?php
 	// USER'S DETAILS - functions.php
@@ -19,7 +25,6 @@
 
 				// PROJECTS DISPLAY - functions.php
 				home($cat);
-
 			?>
 		
 		</div>

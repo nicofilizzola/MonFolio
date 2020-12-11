@@ -1,0 +1,5 @@
+.errormsg{
+    color: map-get($map: $color-cat, $key: 2);
+    font-style: italic;
+    margin: 1rem;
+}

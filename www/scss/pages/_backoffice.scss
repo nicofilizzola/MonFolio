@@ -1,6 +1,46 @@
 .profilepic__bo{
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.banner{
+    width: 1248px;
+    height: 200px;
+    object-fit: cover;
+    position: relative;
+    margin-bottom: 12rem;
+}
+
+.userinfo{
+    &__element{
+        padding: 25px;
+        width: 600px;
+        background-color: $color-primary;
+        position: absolute;
+        top: 100px;
+        border-radius: $border-radius;
+        border: $border-stroke;
+        &__txt{
+            margin-left: 2rem;
+        }
+    }
+}
+
+.editor-form{
+    width: 75vw;
+    input, button, select{
+        margin: 1rem;
+    }
+    input[type=text], button, textarea{
+        width: 400px;
+    }
+}
+
+.editor{
+    img{
+        width: 500px;
+        height: auto;
+    }
 }

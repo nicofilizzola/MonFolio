@@ -131,7 +131,7 @@
 
         echo'
                     </select>
-                    <button type="submit" class="btn btn--secondary flex ">Rechercher<img src="resources/media/img/ico/icon-search-white.svg">
+                    <button type="submit" class="btn btn--secondary flex ">Rechercher<img src="resources/media/ico/icon-search-white.svg">
                     </button>
                 </form>
             </div>
@@ -156,7 +156,7 @@
         function signout_btn(){
             echo '
                 <form action="include/signout.inc.php" method="POST">
-                    <button type="submit" name="signout_submit" class="btn btn--secondary flex">Déconnexion<img src="resources/media/img/ico/icon-logout.svg">
+                    <button type="submit" name="signout_submit" class="btn btn--secondary flex">Déconnexion<img src="resources/media/ico/icon-logout.svg">
                     </button>
                 </form>
             ';

@@ -1,4 +1,4 @@
-input{
+input, textarea{
     color: $color-light;
     padding: 0.6rem 1.1rem;
     border-radius: 0.3rem;
@@ -6,6 +6,7 @@ input{
     border: none;
     background-color: $color-light2;
     transition: 0.3s;
+    resize: none;
     &:not(.input--search):hover, &:not(.input--search):focus{
         background-color: $color-primary;
         outline: 1px solid $color-accent;
@@ -14,6 +15,11 @@ input{
     &::placeholder{
         background-color: $color-light2;
     }
+}
+
+textarea{
+    height: 5rem;
+    width: 12rem;
 }
 
 select{
