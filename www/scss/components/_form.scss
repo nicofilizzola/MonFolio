@@ -5,7 +5,23 @@ input{
     font-size: .875rem;
     border: none;
     background-color: $color-light2;
+    transition: 0.3s;
+    &:not(.input--search):hover, &:not(.input--search):focus{
+        background-color: $color-primary;
+        outline: 1px solid $color-accent;
+        outline-offset: -1px;
+    }
     &::placeholder{
         background-color: $color-light2;
-    }   
+    }
+}
+
+select{
+    margin-left: 1rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: $color-light2;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.3rem;
 }

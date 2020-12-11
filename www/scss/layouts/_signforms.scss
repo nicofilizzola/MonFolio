@@ -1,15 +1,17 @@
 .sign-form{
-    width: 50vw;
-    box-shadow:
-    0  5px 10px rgba(154,160,185,0.05),
-    0 15px 40px rgba(166,173,201,0.2);
+    
+    margin-top: 2rem;
 
     &__container{
-        width: auto;
-        padding: 1rem;
-        background-color: $color-light;
+        width: 94vw;
+        max-width: 480px;
+        padding: 2rem;
+        background-color: $color-primary;
         border-radius: $border-radius;
         position: relative;
+        box-shadow:
+        0  5px 10px rgba(154,160,185,0.05),
+        0 15px 40px rgba(166,173,201,0.2);
 
         .close_button{
             width: 50px;
@@ -18,12 +20,12 @@
             background-color: $transparent;
             position: absolute;
             z-index: 4;
-            top: 1rem;
-            right: 1rem;
+            top: .8rem;
+            right: .8rem;
 
             img{
-                width: 50px;
-                height: 50px;
+                width: 20px;
+                height: 20px;
             }
         }
 
@@ -38,10 +40,16 @@
             }
         }
     }
-
-    input, button {
-        margin: $border-radius;
+    label{
+        font-size: .875rem;
+        font-weight: 600;
+        margin-bottom: .4rem;
     }
 
-    
+    button{
+        margin-top: 1rem;
+    }
+    input{
+        margin-bottom: 1.4rem;
+    }
 }

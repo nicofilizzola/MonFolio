@@ -7,14 +7,15 @@
 	<?php
 	// USER'S DETAILS - functions.php
 	user_info();
+
+	// NEW PROJECT BUTTON - interface.php
+	np_btn();
+	
 	?>
 
 	<div class="project-grid">
 
 			<?php
-
-				// NEW PROJECT BUTTON - interface.php
-				np_btn();
 
 				// PROJECTS DISPLAY - functions.php
 				home($cat);

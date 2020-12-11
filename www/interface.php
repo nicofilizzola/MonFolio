@@ -142,7 +142,7 @@
         echo '
             <form action="searchuser.php" method="get" class="flex flex--center">
                 <button name="user-search_submit"></button>
-                <input type="text" name="user" placeholder="Rechercher un utilisateur">
+                <input type="text" name="user" placeholder="Rechercher un utilisateur" class="input--search">
                 
             </form>
         ';
@@ -189,8 +189,8 @@
                 $media = 'resources/media/img/default.jpg';
             }
             echo '
-                <form action="backoffice.php">
-                    <button class="btn--none" type="submit" name="backoffice_submit" method="POST">
+                <form action="backoffice.php" class="header__profilepic__container">
+                    <button class="btn--none header__profilepic__container" type="submit" name="backoffice_submit" method="POST">
                         <img src="'.$media.'" class="header__profilepic">
                     </button>
                 </form>
@@ -204,7 +204,7 @@
             echo '
                 <div>
                     <form action="editor.php" method="get">
-                        <button id="btnPlus" class="btn--none" type="submit" name="new-project_submit">
+                        <button id="btnPlus" class="btn btn--accent btn--none" type="submit" name="new-project_submit">
                             <img src="resources/media/ico/plus-solid.svg">
                         </button>	
                     </form>
@@ -235,27 +235,32 @@
                         <button class="close_button "id="closeSignIn" onclick="toggleSignIn()">
                             <img src="resources/media/img/times-solid.svg">
                         </button>
-                        <h2>Connecte-toi</h2>
-                        <form class="sign-form flex flex--coxl" action="include/signin.inc.php" method="POST">';
+                        <h3>Se connecter à Monfolio</h2>
+                        <form class="sign-form flex flex--col" action="include/signin.inc.php" method="POST">';
 
             if (isset($_GET['email'])){
 
                 $email_cache = $_GET['email'];
-                echo '<input type="text" name="login" placeholder="Adresse email/Nom d\'utilisateur" value="'.$email_cache.'" required>';
+                echo '
+                <label for="login">Adresse email/Nom d\'utilisateur</label>
+                <input type="text" name="login" value="'.$email_cache.'" required>';
 
             }else{
-
-                echo '<input type="text" name="login" placeholder="Adresse email/Nom d\'utilisateur" required>';
+                
+                echo '
+                <label for="login">Adresse email/Nom d\'utilisateur</label>
+                <input type="text" name="login" required>';
 
             }
 
 
-            echo '       
-                            <input type="password" name="pwd" placeholder="Mot de passe" required>
+            echo '
+                            <label for="password">Mot de passe</label>
+                            <input type="password" name="pwd"required>
                             <!-- 
                             <input type="checkbox" name="remember" value="Rester connecté">	
                             -->
-                            <button type="submit" name="signin_submit">Connexion</button>
+                            <button type="submit" name="signin_submit" class="btn btn--accent">Connexion</button>
                         </form>
                         </div>
                 </section>
@@ -271,7 +276,7 @@
                         <button class="close_button "id="closeSignUp" onclick="toggleSignUp()">
                             <img src="resources/media/img/times-solid.svg">
                         </button>
-                        <h2>Inscris-toi</h2>
+                        <h2>S\'inscrire sur Monfolio</h2>
                         <form class="sign-form flex flex--col" action="include/signup.inc.php" method="POST">';
 
             // FIRST NAME
@@ -282,7 +287,8 @@
 
             } else {
 
-                echo '<input type="text" name="first" placeholder="Prénom" required>';
+                echo '<label for="first">Prénom</label>
+                <input type="text" name="first" required>';
 
             }
 
@@ -290,11 +296,13 @@
             if (isset($_GET['last'])){
 
                 $last_cache = $_GET['last'];
-                echo '<input type="text" name="last" placeholder="Nom" value="'.$last_cache.'" required>';
+                echo '<label for="last">Nom</label>
+                <input type="text" name="last" value="'.$last_cache.'" required>';
 
             } else {
 
-                echo '<input type="text" name="last" placeholder="Nom" required>';
+                echo '<label for="last">Nom</label>
+                <input type="text" name="last" required>';
 
             }
 
@@ -302,11 +310,13 @@
             if (isset($_GET['uid'])){
 
                 $uid_cache = $_GET['uid'];
-                echo '<input type="text" name="uid" placeholder="Nom d\'utilisateur" value="'.$uid_cache.'" required>';
+                echo '<label for="uid">Nom d\'utilisateur</label>
+                <input type="text" name="uid" value="'.$uid_cache.'" required>';
 
             } else {
 
-                echo '<input type="text" name="uid" placeholder="Nom d\'utilisateur" required>';
+                echo '<label for="uid">Nom d\'utilisateur</label>
+                <input type="text" name="uid" required>';
 
             }
                        
@@ -314,19 +324,23 @@
             if (isset($_GET['email'])){
 
                 $email_cache = $_GET['email'];
-                echo '<input type="email" name="email" placeholder="Adresse email" value="'.$email_cache.'" required>';
+                echo '<label for="email">Adresse email</label>
+                <input type="email" name="email" value="'.$email_cache.'" required>';
 
             } else {
 
-                echo '<input type="email" name="email" placeholder="Adresse email" required>';
+                echo '<label for="email">Adresse email</label>
+                <input type="email" name="email" required>';
 
             }
 
             // CLOSE (PWD, PWD VER AND BTN)
             echo '
-                            <input type="password" name="pwd" placeholder="Mot de passe" required>
-                            <input type="password" name="pwd_ver" placeholder="Vérifiez votre mot de passe" required>
-                            <button type="submit" name="signup_submit">Commencer</button>
+                            <label for="password">Mot de passe</label>
+                            <input type="password" name="pwd" required>
+                            <label for="password">Vérifiez votre mot de passe</label>
+                            <input type="password" name="pwd_ver" required>
+                            <button type="submit" name="signup_submit" class="btn btn--accent">Commencer</button>
                         </form>
                     </div>
                 </section>

@@ -20,12 +20,11 @@
         </head>
 
         <body>
-            <div id="popup__overlay"></div>
             <header class="flex">
             <a href="index.php">
                 <img src="resources/media/img/logo.png" alt="logo" class="header__logo">
             </a>
-            <nav class="flex">
+            <nav class="flex flex--jc-c">
         ';
 
     // FOR EVERYONE
